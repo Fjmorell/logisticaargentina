@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://logistica-argentina.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/login</loc>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/register</loc>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/formulario</loc>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/formulario-choferes</loc>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/formulario-comisionista</loc>
+  </url>
+  <url>
+    <loc>hhttps://logistica-argentina.commensaje</loc>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/mensaje-transportista</loc>
+  </url>
+  <url>
+    <loc>https://logistica-argentina.com/recuperar</loc>
+  </url>
+</urlset>
