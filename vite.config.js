@@ -9,7 +9,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src"),
     },
   },
-  build: {
-    sourcemap: true, // <-- Esto genera el source map necesario para analizar el bundle
-  },
 });

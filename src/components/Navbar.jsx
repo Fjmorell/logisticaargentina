@@ -45,14 +45,13 @@ const Navbar = ({ selected, setFormSelect }) => {
 
   // Roles
   const hideHashLinks =
-    user &&
-    user.roles &&
-    user.roles.some((role) => role.id === 1 || role.id === 2);
+  Array.isArray(user?.roles) &&
+  user.roles.some((role) => role.id === 1 || role.id === 2);
 
-  const isTransportista =
-    user &&
-    user.roles &&
-    user.roles.some((role) => role.name.toLowerCase() === "transportistas");
+const isTransportista =
+  Array.isArray(user?.roles) &&
+  user.roles.some((role) => role.name?.toLowerCase() === "transportistas");
+
 
   const logoLink =
     hideHashLinks && location.pathname.startsWith("/dashboard")
@@ -126,7 +125,8 @@ const Navbar = ({ selected, setFormSelect }) => {
               </>
             ) : (
               <>
-                {user.roles.some((role) => role.id === 1 || role.id === 2) && (
+                {Array.isArray(user?.roles) && user.roles.some((role) => role.id === 1 || role.id === 2) && (
+
                   <Link
                     to={location.pathname === "/dashboard" ? "/" : "/dashboard"}
                     className="rounded bg-custom-red px-4 py-2 transition-colors hover:bg-custom-red/80"

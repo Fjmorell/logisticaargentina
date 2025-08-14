@@ -9,7 +9,6 @@ import { HiOutlineMail } from "react-icons/hi";
 import { MdLocalPhone } from "react-icons/md";
 import { TbWorldWww } from "react-icons/tb";
 import "quill/dist/quill.snow.css"; // Tema por defecto
-import { Helmet } from "react-helmet-async";
 
 
 import Layout from "@/components/Layout";
@@ -157,20 +156,7 @@ export default function BannerDetail() {
           </CustomModal>
         )}
       </div>
-      <Helmet>
-  <title>{bannerDetail.detalle.titulo}</title>
-  <meta property="og:title" content={bannerDetail.detalle.titulo} />
-  <meta property="og:description" content={bannerDetail.detalle.cuerpo?.replace(/<[^>]+>/g, '').slice(0, 160)} />
-  <meta property="og:image" content={imageSelected} />
-  <meta property="og:url" content={window.location.href} />
-  <meta property="og:type" content="website" />
-
-  {/* También puede incluir estos si querés más compatibilidad */}
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={bannerDetail.detalle.titulo} />
-  <meta name="twitter:description" content={bannerDetail.detalle.cuerpo?.replace(/<[^>]+>/g, '').slice(0, 160)} />
-  <meta name="twitter:image" content={imageSelected} />
-</Helmet>
+      
 
     </Layout>
   );
