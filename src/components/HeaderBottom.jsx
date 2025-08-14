@@ -24,7 +24,7 @@ function HeaderBottom() {
         spaceBetween={20}
         loop={true}
         autoplay={{ delay: 0, disableOnInteraction: false }}
-        speed={0} // Controla la velocidad del desplazamiento
+        speed={3000} // Controla la velocidad del desplazamiento
         breakpoints={{
           0: { slidesPerView: 2, spaceBetween: 10 },
           640: { slidesPerView: 2, spaceBetween: 20 },
