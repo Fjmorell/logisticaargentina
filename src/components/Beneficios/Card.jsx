@@ -43,18 +43,18 @@ const MiniCard = () => {
         {miniCardsData.map((card, index) => (
           <div
             key={index}
-            className="w-full bg-custom-blue-medium rounded-lg overflow-hidden shadow transition duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 transform"
+            className="group relative w-full bg-custom-blue-medium rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl"
           >
             <img
               src={card.imageUrl}
               alt={card.title}
-              className="w-full h-48 sm:h-40 md:h-48 object-cover"
+              className="w-full h-48 sm:h-40 md:h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
-            <div className="p-4">
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white">
+            <div className="p-4 transition-opacity duration-300 group-hover:opacity-100">
+              <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white transition-colors duration-300 group-hover:text-yellow-300">
                 {card.title}
               </h3>
-              <p className="mt-2 text-sm sm:text-base text-custom-dark">
+              <p className="mt-2 text-sm sm:text-base text-custom-dark transition-opacity duration-300 group-hover:opacity-90">
                 {card.description}
               </p>
             </div>
