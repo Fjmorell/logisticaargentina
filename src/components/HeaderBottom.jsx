@@ -15,17 +15,6 @@ import img6 from "@/assets/empresas/OCASA_optimized.webp";
 import img7 from "@/assets/empresas/andesmar.jpeg";
 import img8 from "@/assets/empresas/qx.jpeg";
 
-// Estilos en línea para las imágenes
-const imageStyles = {
-  maxWidth: '100%',
-  height: '250px',
-  objectFit: 'contain', // Para mantener la relación de aspecto
-  display: 'block',
-  verticalAlign: 'middle',
-  borderRadius: '0.5rem',
-  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-};
-
 function HeaderBottom() {
   const images = [img1, img2, img3, img4, img5, img6, img7, img8];
 
@@ -48,11 +37,11 @@ function HeaderBottom() {
       >
         {images.map((img, index) => (
           <SwiperSlide key={index}>
-            <div className="flex items-center justify-center h-64 p-2 bg-white rounded-xl shadow-md transition-transform duration-300 hover:scale-105">
+            <div className="flex items-center justify-center h-64 p-2 bg-white rounded-xl shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
               <img
                 src={img}
                 alt={`Logo ${index}`}
-                style={imageStyles}
+                className="max-w-full h-[250px] object-contain block"
                 onError={(e) => {
                   e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2YjcyODAiPkxvZ28gbm8gZGlzcG9uaWJsZTwvdGV4dD48L3ZnPg==';
                 }}
