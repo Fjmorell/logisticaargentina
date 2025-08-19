@@ -51,13 +51,14 @@ const MiniCard = () => {
               className="w-full h-48 sm:h-40 md:h-48 object-cover transition-transform duration-300 group-hover:scale-110"
             />
             <div className="p-4 transition-opacity duration-300 group-hover:opacity-100">
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white transition-colors duration-300 group-hover:text-yellow-300">
-                {card.title}
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-custom-dark transition-opacity duration-300 group-hover:opacity-90">
-                {card.description}
-              </p>
-            </div>
+  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white transition-colors duration-300 group-hover:text-[#e30613]">
+    {card.title}
+  </h3>
+  <p className="mt-2 text-sm sm:text-base text-custom-dark transition-opacity duration-300 group-hover:opacity-90">
+    {card.description}
+  </p>
+</div>
+
           </div>
         ))}
       </div>
