@@ -31,17 +31,18 @@ const views = [
 const Sidebar = ({ sidebarOpen, onToggle }) => {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 w-64 bg-gray-100 p-5 border-r border-gray-300 transform transition-transform duration-200 ease-in-out
+      className={`fixed inset-y-0 top-20  left-0 z-50 w-64 bg-gray-100 p-6 border-r border-gray-300 transform transition-transform duration-200 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:static md:translate-x-0`}
     >
       {/* Botón cerrar en móvil */}
-      <button
-        className="mb-4 text-gray-700 md:hidden"
-        onClick={onToggle}
-        aria-label="Cerrar menú"
-      >
-        <FaTimes size={24} />
-      </button>
+     <button
+  className="absolute top-1 left-4 text-gray-700 md:hidden z-50"
+  onClick={onToggle}
+  aria-label="Cerrar menú"
+>
+  <FaTimes size={20} />
+</button>
+
       {views.map(({ key, label, icon: Icon }) => (
         <NavLink
           key={key}
