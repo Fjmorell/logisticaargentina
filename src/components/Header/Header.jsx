@@ -83,7 +83,7 @@ export default function Header() {
         slidesPerView={1}
         loop
         autoplay={{ delay: 3000, disableOnInteraction: true }}
-        className="h-[400px] sm:h-[500px] md:h-[600px] max-h-[90vh] w-full"
+        className="h-[220px] sm:h-[300px] md:h-[450px] xl:h-[600px] max-h-[90vh] w-full"
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         onSlideChange={handleSlideChange}
         navigation
