@@ -37,16 +37,17 @@ function HeaderBottom() {
       >
         {images.map((img, index) => (
           <SwiperSlide key={index}>
-            <div className="flex items-center justify-center h-64 p-2 bg-white rounded-xl shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
-              <img
-                src={img}
-                alt={`Logo ${index}`}
-                className="max-w-full h-[250px] object-contain block"
-                onError={(e) => {
-                  e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2YxZjVmOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2YjcyODAiPkxvZ28gbm8gZGlzcG9uaWJsZTwvdGV4dD48L3ZnPg==';
-                }}
-              />
-            </div>
+            <div className="flex items-center justify-center h-32 sm:h-48 md:h-64 p-2 bg-white rounded-xl shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden">
+  <img
+    src={img}
+    alt={`Logo ${index}`}
+    className="w-full h-20 sm:h-32 md:h-[250px] object-contain block"
+    onError={(e) => {
+      e.target.src = 'data:image/svg+xml;base64,...'; // tu base64 intacto
+    }}
+  />
+</div>
+
           </SwiperSlide>
         ))}
       </Swiper>
