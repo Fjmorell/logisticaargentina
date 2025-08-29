@@ -100,3 +100,13 @@ html { scroll-padding-top: 5rem; } /* coincide con ~h-20; ajustá si cambiás al
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out both;
 }
+.swiper {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding: 21px;
+  z-index: 1;
+  display: block;
+}
