@@ -27,7 +27,7 @@ const Clientes = () => {
 </h2>
 
       {/* ✅ Pros vs Contras */}
-      <section className="bg-gray-100 py-12 px-4">
+      <section className="bg-custom-blue py-12 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* PROS */}
           <div>
@@ -67,7 +67,7 @@ const Clientes = () => {
     
     {/* 📝 Descripción a la izquierda */}
     <div>
-      <h2 className="text-3xl font-bold mb-6 text-custom-dark">
+      <h2 className=" text-3xl font-bold mb-6 text-custom-dark">
         Por qué tercerizar la distribución de tus productos es la mejor decisión
       </h2>
       <p className="mb-4">
@@ -84,7 +84,7 @@ const Clientes = () => {
     </div>
 
     {/* 📋 Formulario a la derecha */}
-    <div className="bg-gray-100 p-8 rounded-lg shadow-md">
+    <div className="bg-custom-blue p-8 rounded-lg shadow-md">
       <h3 className="text-2xl font-bold mb-6 text-custom-dark">
         Completá el formulario y obtené una demo gratuita
       </h3>
@@ -178,7 +178,7 @@ const Clientes = () => {
     </div>
   </div>
 {/* 🧾 Frase debajo del formulario */}
-<div className="mt-8 text-center bg-gray-100 py-6 px-4 rounded-lg">
+<div className="mt-8 text-center bg-custom-blue py-6 px-4 rounded-lg">
   <p className="text-2xl md:text-3xl font-semibold text-gray-900">
     Dejá que nosotros nos ocupemos de la logística, vos ocupate de tu negocio.
   </p>
