@@ -13,31 +13,21 @@ import NotFound from "@/404";
 import MensajeTransportista from "@/components/MensajeTransportista";
 import RecuperarPasswordPage from "@/pages/RecuperarPassword";
 import BannerDetail from "./pages/BannerDetail";
+import Clientes from "./pages/Clientes"; // ✅ Asegurate que este archivo exista
 
 function App() {
   return (
     <Routes>
-      {/* Página principal de la aplicación */}
       <Route path="/" element={<Home />} />
-
-      {/* Rutas de autenticación example */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/recuperar" element={<RecuperarPasswordPage />} />
-
-      {/* Rutas de formularios */}
       <Route path="/formulario" element={<FormularioPage />} />
       <Route path="/formulario-choferes" element={<FormularioChoferes />} />
-      <Route
-        path="/formulario-comisionista"
-        element={<FormularioComisionistaPage />}
-      />
-
-      {/* Rutas de mensajes y notificaciones */}
+      <Route path="/formulario-comisionista" element={<FormularioComisionistaPage />} />
+      <Route path="/clientes" element={<Clientes />} /> {/* ✅ Ruta nueva */}
       <Route path="/mensaje" element={<Mensaje />} />
       <Route path="/mensaje-transportista" element={<MensajeTransportista />} />
-
-      {/* Dashboard protegido - Solo accesible para usuarios con ID 1 o 2 */}
       <Route
         path="/dashboard/*"
         element={
@@ -46,10 +36,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-      
       <Route path="/detalle/:id" element={<BannerDetail />} />
-
-      {/* Ruta para manejar páginas no encontradas (404) */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

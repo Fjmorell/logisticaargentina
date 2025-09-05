@@ -21,7 +21,6 @@ const navbarStyles = `
   }
 `;
 
-
 const StyleInjector = () => (
   <style dangerouslySetInnerHTML={{ __html: navbarStyles }} />
 );
@@ -45,13 +44,12 @@ const Navbar = ({ selected, setFormSelect }) => {
 
   // Roles
   const hideHashLinks =
-  Array.isArray(user?.roles) &&
-  user.roles.some((role) => role.id === 1 || role.id === 2);
+    Array.isArray(user?.roles) &&
+    user.roles.some((role) => role.id === 1 || role.id === 2);
 
-const isTransportista =
-  Array.isArray(user?.roles) &&
-  user.roles.some((role) => role.name?.toLowerCase() === "transportistas");
-
+  const isTransportista =
+    Array.isArray(user?.roles) &&
+    user.roles.some((role) => role.name?.toLowerCase() === "transportistas");
 
   const logoLink =
     hideHashLinks && location.pathname.startsWith("/dashboard")
@@ -82,6 +80,9 @@ const isTransportista =
           <div className="hidden items-center space-x-6 md:flex">
             {!hideHashLinks && (
               <>
+                <Link to="/clientes" className="transition-colors hover:text-gray-300">
+                  Cliente
+                </Link>
                 <HashLink smooth to="/#trabajos" className="transition-colors hover:text-gray-300">
                   Trabajos
                 </HashLink>
@@ -126,7 +127,6 @@ const isTransportista =
             ) : (
               <>
                 {Array.isArray(user?.roles) && user.roles.some((role) => role.id === 1 || role.id === 2) && (
-
                   <Link
                     to={location.pathname === "/dashboard" ? "/" : "/dashboard"}
                     className="rounded bg-custom-red px-4 py-2 transition-colors hover:bg-custom-red/80"
@@ -147,14 +147,12 @@ const isTransportista =
 
           {/* Hamburguesa Mobile */}
           <button
-  className="text-4xl p-3 md:hidden hover:opacity-80 transition"
-  onClick={() => setMenuOpen(!menuOpen)}
-  aria-label="Abrir menú"
->
-  <FaBars />
-</button>
-
-
+            className="text-4xl p-3 md:hidden hover:opacity-80 transition"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Abrir menú"
+          >
+            <FaBars />
+          </button>
         </div>
 
         {/* Menú Mobile */}
@@ -162,6 +160,9 @@ const isTransportista =
           <div className="flex flex-col space-y-2 bg-custom-dark px-4 pb-4 transition-all duration-300 ease-in-out md:hidden">
             {!hideHashLinks && (
               <>
+                <Link to="/clientes" className="transition-colors hover:text-gray-300">
+                  Cliente
+                </Link>
                 <HashLink smooth to="/#trabajos" className="transition-colors hover:text-gray-300">
                   Trabajos
                 </HashLink>
