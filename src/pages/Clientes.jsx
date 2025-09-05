@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton"; // Asegurate que exista y esté bien la ruta
 
 const Clientes = () => {
   return (
@@ -10,17 +11,20 @@ const Clientes = () => {
 
       {/* 🎥 Video YouTube embebido */}
       <section className="relative w-full bg-black">
-        <div className="relative pb-[35%] h-0 overflow-hidden">
+        <div className="relative pb-[25%] h-0 overflow-hidden">
           <iframe
             className="absolute top-0 left-0 w-full h-full"
             src="https://www.youtube.com/embed/KDsLb_8vUFE?autoplay=1&mute=1&loop=1&playlist=KDsLb_8vUFE"
             title="Video para clientes"
             frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
         </div>
       </section>
+<h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-custom-dark">
+  ¿Tercerizar o tener logística propia? Compará y decidí
+</h2>
 
       {/* ✅ Pros vs Contras */}
       <section className="bg-gray-100 py-12 px-4">
@@ -54,116 +58,138 @@ const Clientes = () => {
           </div>
         </div>
       </section>
+      
 
       {/* 🚛 Beneficios + Formulario */}
-      <section className="bg-white text-gray-800 px-6 py-16 min-h-screen">
-        <div className="max-w-5xl mx-auto text-center">
+     {/* 🚛 Beneficios + Formulario en dos columnas */}
+<section className="bg-white py-20 px-6 text-gray-800">
+  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+    
+    {/* 📝 Descripción a la izquierda */}
+    <div>
+      <h2 className="text-3xl font-bold mb-6 text-custom-dark">
+        Beneficios de tercerizar tu transporte
+      </h2>
+      <p className="mb-4">
+        En un mercado cada vez más competitivo, <strong>tercerizar la gestión de transporte</strong> no es un gasto,
+        sino una <strong>inversión estratégica</strong> que impulsa la eficiencia y rentabilidad de tu empresa.
+      </p>
+      <ul className="space-y-3 list-disc list-inside">
+        <li><strong>Reducción de costos fijos</strong>: evitás compra y mantenimiento de flota, suledo, seguros y gastos operativos.</li>
+        <li><strong>Flexibilidad y escalabilidad</strong>: ajustás la capacidad sin sobrecargar estructura.</li>
+        <li><strong>Cobertura nacional inmediata</strong>: acceso a transportistas validados y disponible en todo el país.</li>
+        <li><strong>Gestión profesional 360°</strong>: validación, trazabilidad, asignacion inteligente de carga, seguimiento en tiempo real.</li>
+        <li><strong>Calidad garantizada</strong>: servicios alineados a SLA con foco en puntualidad y experinecia del cliente.</li>
+      </ul>
+    </div>
 
-          <Link
-            to="/contacto"
-            className="inline-block mt-10 bg-custom-red text-white px-6 py-3 rounded hover:bg-custom-red/80 transition"
+    {/* 📋 Formulario a la derecha */}
+    <div className="bg-gray-100 p-8 rounded-lg shadow-md">
+      <h3 className="text-2xl font-bold mb-6 text-custom-dark">
+        Completá el formulario y obtené una demo gratuita
+      </h3>
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Nombre */}
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre *"
+          className="border border-gray-300 rounded px-4 py-2 col-span-1"
+          required
+        />
+
+        {/* Apellido */}
+        <input
+          type="text"
+          name="apellido"
+          placeholder="Apellido *"
+          className="border border-gray-300 rounded px-4 py-2 col-span-1"
+          required
+        />
+
+        {/* País */}
+        <select
+          name="pais"
+          className="border border-gray-300 rounded px-4 py-2 col-span-1"
+          required
+        >
+          <option value="">País *</option>
+          <option value="Argentina">Argentina</option>
+          <option value="Chile">Chile</option>
+          <option value="Uruguay">Uruguay</option>
+          <option value="Paraguay">Paraguay</option>
+        </select>
+
+        {/* Cargo */}
+        <input
+          type="text"
+          name="cargo"
+          placeholder="Cargo *"
+          className="border border-gray-300 rounded px-4 py-2 col-span-1"
+          required
+        />
+
+        {/* Empresa */}
+        <input
+          type="text"
+          name="empresa"
+          placeholder="Empresa *"
+          className="border border-gray-300 rounded px-4 py-2 col-span-2"
+          required
+        />
+
+        {/* Correo */}
+        <input
+          type="email"
+          name="correo"
+          placeholder="Correo *"
+          className="border border-gray-300 rounded px-4 py-2 col-span-2"
+          required
+        />
+
+        {/* Teléfono */}
+        <input
+          type="tel"
+          name="telefono"
+          placeholder="Teléfono *"
+          className="border border-gray-300 rounded px-4 py-2 col-span-2"
+          required
+        />
+
+        {/* Mensaje */}
+        <textarea
+          name="mensaje"
+          placeholder="Mensaje *"
+          rows="3"
+          className="border border-gray-300 rounded px-4 py-2 col-span-2 resize-none"
+          required
+        />
+
+        {/* Botón */}
+        <div className="col-span-2 text-center mt-4">
+          <button
+            type="submit"
+            className="bg-custom-red text-white px-6 py-3 rounded hover:bg-custom-red/80 transition"
           >
-            Quiero una solución logística
-          </Link>
-
-          {/* 📝 Formulario de contacto */}
-          <div className="mt-16 bg-gray-100 p-8 rounded-lg shadow-md text-left">
-            <h2 className="text-2xl font-bold mb-6 text-custom-dark">
-              ¿Querés que te contactemos?
-            </h2>
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Nombre del negocio */}
-              <div className="flex flex-col">
-                <label htmlFor="nombre" className="mb-1 font-medium">Nombre del negocio</label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  className="border border-gray-300 rounded px-4 py-2"
-                  placeholder="Ej: Transporte Martínez SRL"
-                  required
-                />
-              </div>
-
-              {/* Rubro */}
-              <div className="flex flex-col">
-                <label htmlFor="rubro" className="mb-1 font-medium">Rubro / Actividad</label>
-                <input
-                  type="text"
-                  id="rubro"
-                  name="rubro"
-                  className="border border-gray-300 rounded px-4 py-2"
-                  placeholder="Ej: Distribución de alimentos"
-                  required
-                />
-              </div>
-
-              {/* Localidad */}
-              <div className="flex flex-col">
-                <label htmlFor="localidad" className="mb-1 font-medium">Localidad / Provincia</label>
-                <input
-                  type="text"
-                  id="localidad"
-                  name="localidad"
-                  className="border border-gray-300 rounded px-4 py-2"
-                  placeholder="Ej: Córdoba, Buenos Aires"
-                  required
-                />
-              </div>
-
-              {/* Envíos por mes */}
-              <div className="flex flex-col">
-                <label htmlFor="envios" className="mb-1 font-medium">Cantidad de envíos por mes</label>
-                <input
-                  type="number"
-                  id="envios"
-                  name="envios"
-                  className="border border-gray-300 rounded px-4 py-2"
-                  placeholder="Ej: 300"
-                  required
-                />
-              </div>
-
-              {/* Email */}
-              <div className="flex flex-col">
-                <label htmlFor="email" className="mb-1 font-medium">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="border border-gray-300 rounded px-4 py-2"
-                  placeholder="ejemplo@empresa.com"
-                  required
-                />
-              </div>
-
-              {/* Teléfono */}
-              <div className="flex flex-col">
-                <label htmlFor="telefono" className="mb-1 font-medium">Teléfono</label>
-                <input
-                  type="tel"
-                  id="telefono"
-                  name="telefono"
-                  className="border border-gray-300 rounded px-4 py-2"
-                  placeholder="+54 9 ..."
-                  required
-                />
-              </div>
-            </form>
-
-            <div className="mt-8">
-              <button
-                type="submit"
-                className="bg-custom-red text-white px-6 py-3 rounded hover:bg-custom-red/80 transition"
-              >
-                Enviar consulta
-              </button>
-            </div>
-          </div>
+            Enviar consulta
+          </button>
         </div>
-      </section>
+      </form>
+    </div>
+  </div>
+{/* 🧾 Frase debajo del formulario */}
+<div className="mt-8 text-center bg-gray-100 py-6 px-4 rounded-lg">
+  <p className="text-2xl md:text-3xl font-semibold text-gray-900">
+    Dejá que nosotros nos ocupemos de la logística, vos ocupate de tu negocio.
+  </p>
+</div>
+
+
+</section>
+
 
       <Footer />
+      <WhatsAppButton />
     </>
   );
 };
