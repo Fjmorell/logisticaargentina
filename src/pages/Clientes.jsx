@@ -23,7 +23,7 @@ const Clientes = () => {
         </div>
       </section>
 <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-custom-dark">
-  ¿Tercerizar o tener logística propia? Compará y decidí
+  ¿Tercerizar o tener vehículo propio? Compará y decidí
 </h2>
 
       {/* ✅ Pros vs Contras */}
@@ -46,7 +46,7 @@ const Clientes = () => {
           {/* CONTRAS */}
           <div>
             <h2 className="text-2xl font-bold mb-4 text-red-700">
-              ❌ Costos de tener logística propia
+              ❌ Costos de tener vehículo propio
             </h2>
             <ul className="space-y-4 list-disc list-inside text-gray-800">
               <li>Costos fijos altos por vehículos y sueldos</li>
@@ -68,7 +68,7 @@ const Clientes = () => {
     {/* 📝 Descripción a la izquierda */}
     <div>
       <h2 className="text-3xl font-bold mb-6 text-custom-dark">
-        Beneficios de tercerizar tu transporte
+        Por qué tercerizar la distribución de tus productos es la mejor decisión
       </h2>
       <p className="mb-4">
         En un mercado cada vez más competitivo, <strong>tercerizar la gestión de transporte</strong> no es un gasto,
