@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import HeaderBottom from "@/components/HeaderBottom"; // 👈 nuevo
+
 
 // importa la imagen para usarla en el <img>
 import imagenLogistica from "@/assets/imagenlogisticacliente.jpeg";
@@ -207,6 +209,7 @@ const Clientes = () => {
           </p>
         </div>
       </section>
+       <HeaderBottom />
 
       <Footer />
       <WhatsAppButton />
