@@ -110,3 +110,16 @@ html { scroll-padding-top: 5rem; } /* coincide con ~h-20; ajustá si cambiás al
   z-index: 1;
   display: block;
 }
+
+.bg-red-700 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(233 50 50);
+}
+
+.p-10 {
+    padding: 50px 0px 50px 150px;
+}
+
+h2.text-2xl.md\:text-4xl.font-bold.text-center.mb-10.mt-6.text-custom-dark {
+    font-size: 3.25rem !important;
+}

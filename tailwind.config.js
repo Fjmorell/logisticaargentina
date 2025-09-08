@@ -9,6 +9,7 @@ export default {
         "custom-blue": "#89B9BD",
         "custom-gray": "#818181",
         "custom-blue-medium": "#3AA9D9",
+        
       },
       keyframes: {
         bounceWhatsapp: {
