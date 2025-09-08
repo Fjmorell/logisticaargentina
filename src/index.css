@@ -106,7 +106,7 @@ html { scroll-padding-top: 5rem; } /* coincide con ~h-20; ajustá si cambiás al
   position: relative;
   overflow: hidden;
   list-style: none;
-  padding: 21px;
+  padding: 0px;
   z-index: 1;
   display: block;
 }
