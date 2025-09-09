@@ -64,7 +64,8 @@ const Cotizar = () => {
             Pasá de costos fijos y complejidad operativa a un modelo flexible, escalable y con SLA.
           </p>
 
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
             {/* Columna 1 - Vehículo propio */}
             <div className="border rounded-2xl p-6 shadow-sm bg-white">
               <div className="flex items-center justify-between">
@@ -151,7 +152,42 @@ const Cotizar = () => {
                 Hablar con un asesor
               </a>
             </div>
+                      {/* Columna 4 - Híbrido (Transición) */}
+<div className="border rounded-2xl p-6 shadow-sm bg-white">
+  <div className="flex items-center justify-between">
+    <h3 className="text-xl font-semibold text-custom-dark">Híbrido (Transición)</h3>
+    <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Paso intermedio</span>
+  </div>
+  <p className="mt-3 text-gray-600">
+    Combiná tu flota actual con nuestra red para picos, rutas nuevas o zonas no cubiertas.
+  </p>
+
+  <ul className="mt-6 space-y-3 text-sm">
+    <li>🔀 Uso mixto: propia + 3PL según demanda</li>
+    <li>📈 Absorbé picos sin comprar unidades</li>
+    <li>🗺️ Expandí cobertura de forma inmediata</li>
+    <li>📊 KPIs unificados y control por portal</li>
+    <li>💸 Reducción gradual de costos fijos</li>
+    <li>🧩 Ideal para migraciones por etapas</li>
+  </ul>
+
+  <div className="mt-6 border-t pt-4 text-sm text-gray-600">
+    <p><span className="font-semibold">Costo:</span> Mixto (fijo + variable)</p>
+    <p><span className="font-semibold">Escalabilidad:</span> Media → Alta</p>
+    <p><span className="font-semibold">Trazabilidad:</span> Unificada</p>
+  </div>
+
+  <a
+    href="#cotizador"
+    className="mt-6 inline-block w-full text-center bg-custom-blue text-custom-dark font-medium py-3 rounded hover:opacity-90 transition"
+  >
+    Empezar transición
+  </a>
+</div>
           </div>
+
+
+
 
           {/* Franja de cierre */}
           <div className="mt-10 text-center bg-gradient-to-r from-custom-blue to-custom-blue-medium rounded-2xl p-6">
@@ -171,78 +207,7 @@ const Cotizar = () => {
       {/* 🔽 Cotizador inmediato */}
       <QuoteCalculator />
 
-      {/* Formulario de contacto (debajo del cotizador) */}
-      <section className="bg-gray-50 py-20 px-6 text-gray-800">
-        <div className="max-w-3xl mx-auto bg-white p-10 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-custom-dark mb-6 text-center">
-            Pedí tu Cotización
-          </h1>
-
-          {!enviado ? (
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
-              <input
-                type="text"
-                name="nombre"
-                placeholder="Nombre y Apellido *"
-                value={formData.nombre}
-                onChange={handleChange}
-                className="border border-gray-300 rounded px-4 py-2"
-                required
-              />
-
-              <input
-                type="text"
-                name="empresa"
-                placeholder="Empresa"
-                value={formData.empresa}
-                onChange={handleChange}
-                className="border border-gray-300 rounded px-4 py-2"
-              />
-
-              <input
-                type="email"
-                name="correo"
-                placeholder="Correo *"
-                value={formData.correo}
-                onChange={handleChange}
-                className="border border-gray-300 rounded px-4 py-2"
-                required
-              />
-
-              <input
-                type="tel"
-                name="telefono"
-                placeholder="Teléfono *"
-                value={formData.telefono}
-                onChange={handleChange}
-                className="border border-gray-300 rounded px-4 py-2"
-                required
-              />
-
-              <textarea
-                name="mensaje"
-                placeholder="Contanos qué necesitás *"
-                rows="4"
-                value={formData.mensaje}
-                onChange={handleChange}
-                className="border border-gray-300 rounded px-4 py-2 resize-none"
-                required
-              />
-
-              <button
-                type="submit"
-                className="bg-custom-red text-white px-6 py-3 rounded hover:bg-custom-red/80 transition"
-              >
-                Enviar Cotización
-              </button>
-            </form>
-          ) : (
-            <div className="text-center text-green-600 font-semibold">
-              ✅ ¡Gracias por tu consulta! Te responderemos a la brevedad.
-            </div>
-          )}
-        </div>
-      </section>
+     
 
       <WhatsAppButton />
       <Footer />
