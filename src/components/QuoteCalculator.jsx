@@ -30,9 +30,10 @@ const SURCHARGES = {
 /** ======= PROMO / OFERTA ======= */
 const PROMO = {
   enabled: true,
-  label: "Oferta online -15%",
-  percent: 0.15, // 15% de descuento sobre el subtotal del servicio (sin seguro)
+  label: "Bonificado",  // ← antes: "Oferta online -15%"
+  percent: 0.15,        // seguís aplicando 15% de descuento (ajustá si querés)
 };
+
 
 export default function QuoteCalculator() {
   const [form, setForm] = useState({
@@ -232,10 +233,6 @@ export default function QuoteCalculator() {
             <div>
               <label className="block text-sm font-medium mb-1">Provincia (destino)</label>
               <input name="destinoProvincia" value={form.destinoProvincia} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Córdoba" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Ciudad (destino)</label>
-              <input name="destinoCiudad" value={form.destinoCiudad} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Río Cuarto" />
             </div>
           </div>
 
