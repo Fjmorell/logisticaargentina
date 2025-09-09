@@ -1,9 +1,7 @@
 // src/components/QuoteCalculator.jsx
 import React, { useMemo, useState } from "react";
 
-/** ======= TABLAS DE TARIFAS (EJEMPLO) =======
- * EDITÁ ESTOS VALORES PARA AJUSTAR A TUS COSTOS
- */
+/** ======= TABLAS DE TARIFAS (EDITABLES) ======= */
 const COUNT_BANDS = {
   "0-10":  { label: "0-10",  assumed: 10,  discount: 1.00 },
   "11-20": { label: "11-20", assumed: 20,  discount: 0.95 },
@@ -14,8 +12,8 @@ const COUNT_BANDS = {
 };
 
 const SIZE_RATES = {
-  small: { label: "Hasta 35 kg",    perPackage: 1200 },
-  large: { label: "Más de 35 kg",   perPackage: 2000 },
+  small: { label: "Hasta 35 kg",  perPackage: 1200 },
+  large: { label: "Más de 35 kg", perPackage: 2000 },
 };
 
 const DISTANCE_BANDS = {
@@ -29,9 +27,16 @@ const SURCHARGES = {
   seguro: 0.012,     // 1.2% del valor declarado
 };
 
+/** ======= PROMO / OFERTA ======= */
+const PROMO = {
+  enabled: true,
+  label: "Oferta online -15%",
+  percent: 0.15, // 15% de descuento sobre el subtotal del servicio (sin seguro)
+};
+
 export default function QuoteCalculator() {
   const [form, setForm] = useState({
-    // NUEVOS CAMPOS
+    // Rangos
     paquetesBand: "0-10",
     size: "small",
     distanceBand: "0-50",
@@ -57,6 +62,7 @@ export default function QuoteCalculator() {
     setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
   };
 
+  /** ======= CÁLCULO BASE ======= */
   const price = useMemo(() => {
     const count = COUNT_BANDS[form.paquetesBand];
     const size = SIZE_RATES[form.size];
@@ -66,17 +72,11 @@ export default function QuoteCalculator() {
       return { subtotal: 0, total: 0, breakdown: [], error: "" };
     }
 
-    // Base operativa (fijo por servicio)
-    const baseOperativa = 3000;
-
-    // Costo por distancia según banda
-    const costoDistancia = dist.fee;
-
-    // Costo por paquetes = (precio por paquete * cantidad estimada) con descuento por volumen
+    const baseOperativa = 3000;              // fijo por servicio
+    const costoDistancia = dist.fee;         // por banda de km
     const paquetesSinDesc = size.perPackage * count.assumed;
     const paquetesConDesc = Math.round(paquetesSinDesc * count.discount);
 
-    // Subtotal antes de extra (urgencia/seguro)
     let subtotal = baseOperativa + costoDistancia + paquetesConDesc;
 
     const breakdown = [
@@ -88,14 +88,14 @@ export default function QuoteCalculator() {
       },
     ];
 
-    // Urgencia 24h
+    // Urgencia 24h (multiplicador sobre subtotal del servicio)
     if (form.urgencia24h) {
       const prev = subtotal;
       subtotal = Math.round(subtotal * SURCHARGES.urgencia24h);
       breakdown.push({ label: "Urgencia 24h (+25%)", value: subtotal - prev });
     }
 
-    // Seguro
+    // Seguro (sobre valor declarado)
     const declarado = Number(form.valorDeclarado) || 0;
     let seguro = 0;
     if (form.seguro && declarado > 0) {
@@ -110,8 +110,18 @@ export default function QuoteCalculator() {
     return { subtotal, total, breakdown, error: "" };
   }, [form]);
 
+  /** ======= CÁLCULO PROMO (descuento sobre subtotal del servicio) ======= */
+  const promo = useMemo(() => {
+    if (!PROMO.enabled) return { totalPromo: price.total, descuento: 0 };
+    const descuento = Math.round((price.subtotal || 0) * PROMO.percent);
+    const extras = (price.total || 0) - (price.subtotal || 0); // seguro y otros
+    const totalPromo = Math.max((price.subtotal || 0) - descuento, 0) + extras;
+    return { totalPromo, descuento };
+  }, [price]);
+
+  /** ======= WHATSAPP ======= */
   const whatsappHref = useMemo(() => {
-    const phone = "54911XXXXXXXX"; // ← TU NÚMERO (sin + ni 00)
+    const phone = "54911XXXXXXXX"; // ← Reemplazá por tu número (sin + ni 00)
     const msg = [
       "¡Hola! Quiero cotizar una distribución 👇",
       `• Cantidad de paquetes: ${COUNT_BANDS[form.paquetesBand]?.label || "-"}`,
@@ -122,12 +132,11 @@ export default function QuoteCalculator() {
       `• Urgencia 24h: ${form.urgencia24h ? "Sí" : "No"}`,
       `• Seguro: ${form.seguro ? "Sí" : "No"} ${form.valorDeclarado ? `(valor declarado $${Number(form.valorDeclarado).toLocaleString()})` : ""}`,
       "",
-      `Subtotal estimado: $${price.subtotal.toLocaleString()}`,
-      `Total estimado: $${price.total.toLocaleString()}`,
-      form.observaciones ? `\nNotas: ${form.observaciones}` : "",
+      `Precio de lista: $${(price.total || 0).toLocaleString()}`,
+      PROMO.enabled ? `Precio especial (${PROMO.label}): $${(promo.totalPromo || 0).toLocaleString()}` : "",
     ].join("\n");
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-  }, [form, price]);
+  }, [form, price, promo]);
 
   return (
     <section id="cotizador" className="bg-gray-50 py-16 px-6 text-gray-800 scroll-mt-24">
@@ -139,7 +148,7 @@ export default function QuoteCalculator() {
           Estimá tu distribución por rangos y recibí el total al instante.
         </p>
 
-        {/* FORM */}
+        {/* ===== FORM ===== */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Cantidad de paquetes */}
           <div>
@@ -255,7 +264,7 @@ export default function QuoteCalculator() {
           </div>
         </div>
 
-        {/* RESULTADO */}
+        {/* ===== RESULTADO ===== */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
             <h3 className="text-lg font-semibold text-custom-dark">Detalle del cálculo</h3>
@@ -270,11 +279,45 @@ export default function QuoteCalculator() {
           </div>
 
           <div className="bg-gray-50 rounded-xl p-5 border">
-            <p className="text-sm text-gray-600">Subtotal estimado</p>
-            <p className="text-2xl font-bold text-custom-dark">${(price.subtotal || 0).toLocaleString()}</p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-600">Subtotal estimado</p>
+              {PROMO.enabled && (
+                <span className="text-[11px] bg-custom-red/10 text-custom-red px-2 py-0.5 rounded">
+                  {PROMO.label}
+                </span>
+              )}
+            </div>
+
+            {/* Precio de lista tachado */}
+            <div className="mt-1">
+              <span className="text-xs text-gray-500">Precio de lista</span>
+              <p className="text-xl font-semibold text-gray-500 line-through">
+                ${(price.total || 0).toLocaleString()}
+              </p>
+            </div>
+
+            {/* Precio especial */}
+            <div className="mt-2">
+              <span className="text-xs text-gray-600">Precio especial</span>
+              <p className="text-3xl font-extrabold text-custom-dark">
+                ${(promo.totalPromo || 0).toLocaleString()}
+              </p>
+            </div>
+
+            {/* Ahorro */}
+            {PROMO.enabled && promo.descuento > 0 && (
+              <p className="mt-1 text-sm text-green-600">
+                Ahorrás ${promo.descuento.toLocaleString()} en servicio.
+              </p>
+            )}
+
             <hr className="my-3" />
-            <p className="text-sm text-gray-600">Total estimado</p>
-            <p className="text-3xl font-extrabold text-custom-dark">${(price.total || 0).toLocaleString()}</p>
+
+            {/* Resumen servicio/seguro */}
+            <div className="text-xs text-gray-600 space-y-1">
+              <p>Servicio (con promo): ${(Math.max((price.subtotal || 0) - (promo.descuento || 0), 0)).toLocaleString()}</p>
+              <p>Seguro: ${(((price.total || 0) - (price.subtotal || 0)) || 0).toLocaleString()}</p>
+            </div>
 
             <a
               href={whatsappHref}
@@ -285,7 +328,7 @@ export default function QuoteCalculator() {
               Solicitar servicio por WhatsApp
             </a>
             <p className="text-[11px] text-gray-500 mt-2">
-              * Valores estimados. Pueden variar por accesos, manipulación, volumen y ventanas horarias.
+              * Oferta aplicada al servicio. Seguro y extras no incluidos en el descuento.
             </p>
           </div>
         </div>
