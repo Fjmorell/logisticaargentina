@@ -190,6 +190,8 @@ const Cotizar = () => {
       </a>
     </div>
   </div>
+  <HeaderBottom />
+  
 </section>
 
     <section className="bg-gray-50 py-20 px-6 text-gray-800">

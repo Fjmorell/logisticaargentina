@@ -71,7 +71,7 @@ const Clientes = () => {
     className="w-full h-[400px] object-cover"
   />
 </section>
-
+<HeaderBottom />
 
       {/* 🚛 Beneficios + Formulario en dos columnas */}
       <section className="bg-white py-20 px-6 text-gray-800">
@@ -219,7 +219,7 @@ const Clientes = () => {
           </p>
         </div>
       </section>
-       <HeaderBottom />
+       
 
       <Footer />
       <WhatsAppButton />

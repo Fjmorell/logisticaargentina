@@ -82,8 +82,8 @@ export default function Header() {
         effect="slide"
         slidesPerView={1}
         loop
-        autoplay={{ delay: 30000, disableOnInteraction: true }}
-        className="w-full" // ocupa todo el ancho
+        autoplay={{ delay: 3000, disableOnInteraction: true }}
+        className="h-[420px] sm:h-[300px] md:h-[450px] xl:h-[600px] max-h-[90vh] w-full"
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         onSlideChange={handleSlideChange}
         navigation
@@ -93,16 +93,44 @@ export default function Header() {
 
           return (
             <SwiperSlide key={img.id}>
-       {/* Contenedor 21:9 */}
-  <div className="relative w-full aspect-[21/9]">
-    <img
-      onClick={() => handleImage(img)}
-      src={img.url_imagen}
-      alt={`Slide ${img.id}`}
-      className="absolute inset-0 w-full h-full object-cover object-center"
-      loading="lazy"
-    />
-  </div>
+              {img.isVideo && img.url_imagen.includes("youtube") && videoId ? (
+                <iframe
+                  id={`youtube-player-${videoId}`}
+                  className="h-full w-full rounded-md"
+                  src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
+                  title={`YouTube video ${videoId}`}
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  onLoad={() => {
+                    if (window.YT && window.YT.Player) {
+                      new window.YT.Player(`youtube-player-${videoId}`, {
+                        events: {
+                          onStateChange: (event) => {
+                            const state = event.data;
+                            if (state === window.YT.PlayerState.PLAYING) {
+                              swiperRef.current?.autoplay?.stop?.();
+                              setIsAutoplay(true);
+                            } else if (state === window.YT.PlayerState.PAUSED) {
+                              swiperRef.current?.autoplay?.start?.();
+                              setIsAutoplay(false);
+                            } else if (state === window.YT.PlayerState.ENDED) {
+                              setIsAutoplay(false);
+                              swiperRef.current?.autoplay?.start?.();
+                            }
+                          },
+                        },
+                      });
+                    }
+                  }}
+                />
+              ) : (
+                <img
+                  onClick={() => handleImage(img)}
+                  src={img.url_imagen}
+                  alt={`Slide ${img.id}`}
+                  className="w-full h-full object-cover"
+                />
+              )}
             </SwiperSlide>
           );
         })}
