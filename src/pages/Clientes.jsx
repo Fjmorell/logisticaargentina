@@ -70,6 +70,7 @@ const Clientes = () => {
     alt="Logística sin preocupaciones"
     className="w-full h-[400px] object-cover"
   />
+  
 </section>
 <HeaderBottom />
 
@@ -110,7 +111,7 @@ const Clientes = () => {
   <div className="mt-8">
      <Link
       to="/cotizar"
-      className="bg-custom-red text-white px-48 py-6 rounded shadow hover:bg-custom-red/80 transition"
+      className="bg-custom-red text-white px-48 py-8 rounded shadow hover:bg-custom-red/80 transition"
     >
       Quiero Cotizar
     </Link>

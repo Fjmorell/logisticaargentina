@@ -1,27 +1,54 @@
 // src/components/QuoteCalculator.jsx
 import React, { useMemo, useState } from "react";
 
-const RATES = {
-  moto:   { label: "Moto (docs/paquetes livianos)", base: 2500, perKm: 180, perKg: 30,  min: 4200,  maxKg: 10 },
-  furgon: { label: "Furgón (paquetería/mediano)",   base: 5000, perKm: 220, perKg: 45,  min: 8500,  maxKg: 800 },
-  camion: { label: "Camión (paletizado/grande)",    base: 9000, perKm: 260, perKg: 80,  min: 16000, maxKg: 30000 },
+/** ======= TABLAS DE TARIFAS (EJEMPLO) =======
+ * EDITÁ ESTOS VALORES PARA AJUSTAR A TUS COSTOS
+ */
+const COUNT_BANDS = {
+  "0-10":  { label: "0-10",  assumed: 10,  discount: 1.00 },
+  "11-20": { label: "11-20", assumed: 20,  discount: 0.95 },
+  "21-30": { label: "21-30", assumed: 30,  discount: 0.92 },
+  "31-40": { label: "31-40", assumed: 40,  discount: 0.90 },
+  "41-50": { label: "41-50", assumed: 50,  discount: 0.88 },
+  "50+":   { label: "+50",   assumed: 60,  discount: 0.85 },
+};
+
+const SIZE_RATES = {
+  small: { label: "Hasta 35 kg",    perPackage: 1200 },
+  large: { label: "Más de 35 kg",   perPackage: 2000 },
+};
+
+const DISTANCE_BANDS = {
+  "0-50":   { label: "0-50 km",    fee: 6000 },
+  "51-100": { label: "51-100 km",  fee: 10000 },
+  "100+":   { label: "+ de 100 km", fee: 15000 },
 };
 
 const SURCHARGES = {
-  urgencia24h: 1.25,  // +25%
-  seguro: 0.012,      // 1.2% del valor declarado
+  urgencia24h: 1.25, // +25% sobre subtotal (sin seguro)
+  seguro: 0.012,     // 1.2% del valor declarado
 };
 
 export default function QuoteCalculator() {
   const [form, setForm] = useState({
-    unidad: "furgon",
-    distanciaKm: "",
-    pesoKg: "",
-    valorDeclarado: "",
+    // NUEVOS CAMPOS
+    paquetesBand: "0-10",
+    size: "small",
+    distanceBand: "0-50",
+
+    // Ubicación
+    origenPais: "Argentina",
+    origenProvincia: "",
+    origenCiudad: "",
+    destinoPais: "Argentina",
+    destinoProvincia: "",
+    destinoCiudad: "",
+
+    // Extras
     urgencia24h: false,
     seguro: true,
-    origen: "",
-    destino: "",
+    valorDeclarado: "",
+
     observaciones: "",
   });
 
@@ -30,152 +57,224 @@ export default function QuoteCalculator() {
     setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
   };
 
-  const currentRate = useMemo(() => RATES[form.unidad], [form.unidad]);
+  const price = useMemo(() => {
+    const count = COUNT_BANDS[form.paquetesBand];
+    const size = SIZE_RATES[form.size];
+    const dist = DISTANCE_BANDS[form.distanceBand];
 
-  const quote = useMemo(() => {
-    const km = Number(form.distanciaKm) || 0;
-    const kg = Number(form.pesoKg) || 0;
-    const decl = Number(form.valorDeclarado) || 0;
-
-    if (!currentRate || km <= 0 || kg <= 0) {
+    if (!count || !size || !dist) {
       return { subtotal: 0, total: 0, breakdown: [], error: "" };
     }
-    if (currentRate.maxKg && kg > currentRate.maxKg) {
-      return {
-        subtotal: 0,
-        total: 0,
-        breakdown: [],
-        error: `El peso (${kg} kg) excede el máximo para ${currentRate.label} (${currentRate.maxKg} kg).`,
-      };
-    }
 
-    const base = currentRate.base;
-    const tramoKm = km * currentRate.perKm;
-    const tramoKg = Math.max(currentRate.min, kg * currentRate.perKg);
+    // Base operativa (fijo por servicio)
+    const baseOperativa = 3000;
 
-    let subtotal = base + tramoKm + tramoKg;
+    // Costo por distancia según banda
+    const costoDistancia = dist.fee;
+
+    // Costo por paquetes = (precio por paquete * cantidad estimada) con descuento por volumen
+    const paquetesSinDesc = size.perPackage * count.assumed;
+    const paquetesConDesc = Math.round(paquetesSinDesc * count.discount);
+
+    // Subtotal antes de extra (urgencia/seguro)
+    let subtotal = baseOperativa + costoDistancia + paquetesConDesc;
+
     const breakdown = [
-      { label: "Base", value: base },
-      { label: `Distancia (${km} km)`, value: tramoKm },
-      { label: `Peso (${kg} kg)`, value: tramoKg },
+      { label: "Base operativa", value: baseOperativa },
+      { label: `Distancia (${dist.label})`, value: costoDistancia },
+      {
+        label: `Paquetes (${count.label}) · ${size.label} ${count.discount < 1 ? `(desc. ${(100 - count.discount * 100).toFixed(0)}%)` : ""}`,
+        value: paquetesConDesc,
+      },
     ];
 
+    // Urgencia 24h
     if (form.urgencia24h) {
       const prev = subtotal;
       subtotal = Math.round(subtotal * SURCHARGES.urgencia24h);
       breakdown.push({ label: "Urgencia 24h (+25%)", value: subtotal - prev });
     }
 
+    // Seguro
+    const declarado = Number(form.valorDeclarado) || 0;
     let seguro = 0;
-    if (form.seguro && decl > 0) {
-      seguro = Math.round(decl * SURCHARGES.seguro);
-      breakdown.push({ label: `Seguro (1.2% de $${decl.toLocaleString()})`, value: seguro });
+    if (form.seguro && declarado > 0) {
+      seguro = Math.round(declarado * SURCHARGES.seguro);
+      breakdown.push({
+        label: `Seguro (1.2% de $${declarado.toLocaleString()})`,
+        value: seguro,
+      });
     }
 
     const total = subtotal + seguro;
     return { subtotal, total, breakdown, error: "" };
-  }, [form, currentRate]);
+  }, [form]);
 
   const whatsappHref = useMemo(() => {
-    const phone = "54911XXXXXXXX"; // ← poné tu número (sin + ni 00)
+    const phone = "54911XXXXXXXX"; // ← TU NÚMERO (sin + ni 00)
     const msg = [
-      "¡Hola! Quiero cotizar un envío 👇",
-      `• Opción: ${currentRate?.label || "-"}`,
-      `• Origen: ${form.origen || "-"}`,
-      `• Destino: ${form.destino || "-"}`,
-      `• Distancia: ${form.distanciaKm || "-"} km`,
-      `• Peso: ${form.pesoKg || "-"} kg`,
+      "¡Hola! Quiero cotizar una distribución 👇",
+      `• Cantidad de paquetes: ${COUNT_BANDS[form.paquetesBand]?.label || "-"}`,
+      `• Tamaño: ${SIZE_RATES[form.size]?.label || "-"}`,
+      `• Kilómetros (aprox.): ${DISTANCE_BANDS[form.distanceBand]?.label || "-"}`,
+      `• Origen: ${form.origenCiudad || "-"}, ${form.origenProvincia || "-"}, ${form.origenPais || "-"}`,
+      `• Destino: ${form.destinoCiudad || "-"}, ${form.destinoProvincia || "-"}, ${form.destinoPais || "-"}`,
       `• Urgencia 24h: ${form.urgencia24h ? "Sí" : "No"}`,
-      `• Seguro: ${form.seguro ? "Sí" : "No"} (${form.valorDeclarado ? "$" + Number(form.valorDeclarado).toLocaleString() : "-"})`,
+      `• Seguro: ${form.seguro ? "Sí" : "No"} ${form.valorDeclarado ? `(valor declarado $${Number(form.valorDeclarado).toLocaleString()})` : ""}`,
       "",
-      `Subtotal estimado: $${(quote.subtotal || 0).toLocaleString()}`,
-      `Total estimado: $${(quote.total || 0).toLocaleString()}`,
+      `Subtotal estimado: $${price.subtotal.toLocaleString()}`,
+      `Total estimado: $${price.total.toLocaleString()}`,
       form.observaciones ? `\nNotas: ${form.observaciones}` : "",
     ].join("\n");
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-  }, [form, quote, currentRate]);
+  }, [form, price]);
 
   return (
     <section id="cotizador" className="bg-gray-50 py-16 px-6 text-gray-800 scroll-mt-24">
       <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow p-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-custom-dark text-center">Cotizador inmediato</h2>
-        <p className="text-center text-gray-600 mt-2">Estimá tu envío en segundos. Después coordinamos la recolección.</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-custom-dark text-center">
+          Cotizador inmediato
+        </h2>
+        <p className="text-center text-gray-600 mt-2">
+          Estimá tu distribución por rangos y recibí el total al instante.
+        </p>
 
+        {/* FORM */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Cantidad de paquetes */}
           <div>
-            <label className="block text-sm font-medium mb-1">Tipo de unidad</label>
-            <select name="unidad" value={form.unidad} onChange={onChange} className="w-full border rounded px-3 py-2">
-              <option value="moto">Moto</option>
-              <option value="furgon">Furgón</option>
-              <option value="camion">Camión</option>
+            <label className="block text-sm font-medium mb-1">Cantidad de paquetes</label>
+            <select
+              name="paquetesBand"
+              value={form.paquetesBand}
+              onChange={onChange}
+              className="w-full border rounded px-3 py-2"
+            >
+              {Object.keys(COUNT_BANDS).map((k) => (
+                <option key={k} value={k}>{COUNT_BANDS[k].label}</option>
+              ))}
             </select>
-            <p className="text-xs text-gray-500 mt-1">{RATES[form.unidad].label}</p>
+            <p className="text-[11px] text-gray-500 mt-1">
+              Se asume {COUNT_BANDS[form.paquetesBand].assumed} paquetes para el cálculo.
+            </p>
           </div>
 
+          {/* Tamaño */}
           <div>
-            <label className="block text-sm font-medium mb-1">Distancia (km)</label>
-            <input name="distanciaKm" type="number" min="1" value={form.distanciaKm} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: 25" />
+            <label className="block text-sm font-medium mb-1">Tamaño del paquete</label>
+            <select
+              name="size"
+              value={form.size}
+              onChange={onChange}
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="small">{SIZE_RATES.small.label}</option>
+              <option value="large">{SIZE_RATES.large.label}</option>
+            </select>
           </div>
 
+          {/* Km aprox */}
           <div>
-            <label className="block text-sm font-medium mb-1">Peso (kg)</label>
-            <input name="pesoKg" type="number" min="1" value={form.pesoKg} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: 50" />
+            <label className="block text-sm font-medium mb-1">Kilómetros (aprox.)</label>
+            <select
+              name="distanceBand"
+              value={form.distanceBand}
+              onChange={onChange}
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="0-50">{DISTANCE_BANDS["0-50"].label}</option>
+              <option value="51-100">{DISTANCE_BANDS["51-100"].label}</option>
+              <option value="100+">{DISTANCE_BANDS["100+"].label}</option>
+            </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Origen</label>
-            <input name="origen" value={form.origen} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: CABA - Villa Crespo" />
+          {/* Origen */}
+          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">País (origen)</label>
+              <select name="origenPais" value={form.origenPais} onChange={onChange} className="w-full border rounded px-3 py-2">
+                <option>Argentina</option>
+                <option>Chile</option>
+                <option>Uruguay</option>
+                <option>Paraguay</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Provincia (origen)</label>
+              <input name="origenProvincia" value={form.origenProvincia} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Buenos Aires" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Ciudad (origen)</label>
+              <input name="origenCiudad" value={form.origenCiudad} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: CABA" />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Destino</label>
-            <input name="destino" value={form.destino} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: La Plata - Centro" />
+          {/* Destino */}
+          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">País (destino)</label>
+              <select name="destinoPais" value={form.destinoPais} onChange={onChange} className="w-full border rounded px-3 py-2">
+                <option>Argentina</option>
+                <option>Chile</option>
+                <option>Uruguay</option>
+                <option>Paraguay</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Provincia (destino)</label>
+              <input name="destinoProvincia" value={form.destinoProvincia} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Córdoba" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Ciudad (destino)</label>
+              <input name="destinoCiudad" value={form.destinoCiudad} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Río Cuarto" />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Valor declarado ($)</label>
-            <input name="valorDeclarado" type="number" min="0" value={form.valorDeclarado} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Opcional (para seguro)" />
+          {/* Seguro / Urgencia / Valor declarado */}
+          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <label className="flex items-center gap-2">
+              <input id="urgencia24h" name="urgencia24h" type="checkbox" checked={form.urgencia24h} onChange={onChange} />
+              <span className="text-sm">Urgencia 24h (+25%)</span>
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input id="seguro" name="seguro" type="checkbox" checked={form.seguro} onChange={onChange} />
+              <span className="text-sm">Seguro sobre valor declarado (1.2%)</span>
+            </label>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Valor declarado ($)</label>
+              <input name="valorDeclarado" type="number" min="0" value={form.valorDeclarado} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Opcional" />
+            </div>
           </div>
 
-          <label className="flex items-center gap-2">
-            <input id="urgencia24h" name="urgencia24h" type="checkbox" checked={form.urgencia24h} onChange={onChange} />
-            <span className="text-sm">Urgencia 24h (+25%)</span>
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input id="seguro" name="seguro" type="checkbox" checked={form.seguro} onChange={onChange} />
-            <span className="text-sm">Seguro sobre valor declarado (1.2%)</span>
-          </label>
-
+          {/* Observaciones */}
           <div className="md:col-span-3">
             <label className="block text-sm font-medium mb-1">Observaciones</label>
-            <textarea name="observaciones" rows={2} value={form.observaciones} onChange={onChange} className="w-full border rounded px-3 py-2 resize-none" placeholder="Ventana horaria, referencias, tipo de carga, etc." />
+            <textarea name="observaciones" rows={2} value={form.observaciones} onChange={onChange} className="w-full border rounded px-3 py-2 resize-none" placeholder="Ventana horaria, referencias, manejo especial, etc." />
           </div>
         </div>
 
+        {/* RESULTADO */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
             <h3 className="text-lg font-semibold text-custom-dark">Detalle del cálculo</h3>
-            {quote.error ? (
-              <div className="mt-3 p-3 rounded bg-red-50 text-red-700 text-sm">{quote.error}</div>
-            ) : (
-              <ul className="mt-3 text-sm space-y-2">
-                {quote.breakdown.map((b, i) => (
-                  <li key={i} className="flex justify-between border-b pb-1">
-                    <span>{b.label}</span>
-                    <span>${b.value.toLocaleString()}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <ul className="mt-3 text-sm space-y-2">
+              {price.breakdown.map((b, i) => (
+                <li key={i} className="flex justify-between border-b pb-1">
+                  <span>{b.label}</span>
+                  <span>${b.value.toLocaleString()}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="bg-gray-50 rounded-xl p-5 border">
             <p className="text-sm text-gray-600">Subtotal estimado</p>
-            <p className="text-2xl font-bold text-custom-dark">${(quote.subtotal || 0).toLocaleString()}</p>
+            <p className="text-2xl font-bold text-custom-dark">${(price.subtotal || 0).toLocaleString()}</p>
             <hr className="my-3" />
             <p className="text-sm text-gray-600">Total estimado</p>
-            <p className="text-3xl font-extrabold text-custom-dark">${(quote.total || 0).toLocaleString()}</p>
+            <p className="text-3xl font-extrabold text-custom-dark">${(price.total || 0).toLocaleString()}</p>
 
             <a
               href={whatsappHref}
