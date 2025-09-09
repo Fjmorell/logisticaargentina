@@ -67,7 +67,8 @@ const Cotizar = () => {
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             {/* Columna 1 - Vehículo propio */}
-            <div className="border rounded-2xl p-6 shadow-sm bg-white">
+
+            <div className="border rounded-2xl p-6 shadow-sm bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-semibold text-custom-dark">Vehículo propio</h3>
                 <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Modelo tradicional</span>
@@ -92,9 +93,8 @@ const Cotizar = () => {
                 Evaluar costos actuales
               </a>
             </div>
-
             {/* Columna 2 - Business (Recomendado) */}
-            <div className="relative border-2 rounded-2xl p-6 shadow-md bg-white border-custom-red">
+            <div className="relative border-2 rounded-2xl p-6 shadow-md bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg border-custom-red" >
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-custom-red text-white px-3 py-1 rounded-full shadow">
                 Recomendado
               </span>
@@ -126,36 +126,10 @@ const Cotizar = () => {
               </p>
             </div>
 
-            {/* Columna 3 - Personalizar */}
-            <div className="border rounded-2xl p-6 shadow-sm bg-white">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-custom-dark">Personalizar</h3>
-                <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">A medida</span>
-              </div>
-              <p className="mt-3 text-gray-600">
-                Configuramos reglas, integraciones y branding a tu operación.
-              </p>
-              <ul className="mt-6 space-y-3 text-sm">
-                <li>🛠️ Integración API/ERP/WMS</li>
-                <li>🛠️ Reglas de despacho por zona, peso y SLA</li>
-                <li>🛠️ Ventanas horarias y requisitos especiales</li>
-                <li>🛠️ Etiquetas y documentación con tu marca</li>
-                <li>🛠️ Reportes y KPIs personalizados</li>
-                <li>ℹ️ Requiere onboarding y volumen mínimo</li>
-              </ul>
-              <div className="mt-6 border-t pt-4 text-sm text-gray-600">
-                <p><span className="font-semibold">Costo:</span> Proyecto + variable</p>
-                <p><span className="font-semibold">Escalabilidad:</span> Alta</p>
-                <p><span className="font-semibold">Trazabilidad:</span> Full + KPIs a medida</p>
-              </div>
-              <a href="#cotizador" className="mt-6 inline-block w-full text-center bg-custom-dark text-white font-medium py-3 rounded hover:opacity-90 transition">
-                Hablar con un asesor
-              </a>
-            </div>
-                      {/* Columna 4 - Híbrido (Transición) */}
-<div className="border rounded-2xl p-6 shadow-sm bg-white">
+                                  {/* Columna 4 - Híbrido (Transición) */}
+<div className="border rounded-2xl p-6 shadow-sm bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg">
   <div className="flex items-center justify-between">
-    <h3 className="text-xl font-semibold text-custom-dark">Híbrido (Transición)</h3>
+    <h3 className="text-xl font-semibold text-custom-dark">Basic</h3>
     <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Paso intermedio</span>
   </div>
   <p className="mt-3 text-gray-600">
@@ -184,6 +158,34 @@ const Cotizar = () => {
     Empezar transición
   </a>
 </div>
+
+            {/* Columna 3 - Personalizar */}
+            <div className="border rounded-2xl p-6 shadow-sm bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-custom-dark">Personalizar</h3>
+                <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">A medida</span>
+              </div>
+              <p className="mt-3 text-gray-600">
+                Configuramos reglas, integraciones y branding a tu operación.
+              </p>
+              <ul className="mt-6 space-y-3 text-sm">
+                <li>🛠️ Integración API/ERP/WMS</li>
+                <li>🛠️ Reglas de despacho por zona, peso y SLA</li>
+                <li>🛠️ Ventanas horarias y requisitos especiales</li>
+                <li>🛠️ Etiquetas y documentación con tu marca</li>
+                <li>🛠️ Reportes y KPIs personalizados</li>
+                <li>ℹ️ Requiere onboarding y volumen mínimo</li>
+              </ul>
+              <div className="mt-6 border-t pt-4 text-sm text-gray-600">
+                <p><span className="font-semibold">Costo:</span> Proyecto + variable</p>
+                <p><span className="font-semibold">Escalabilidad:</span> Alta</p>
+                <p><span className="font-semibold">Trazabilidad:</span> Full + KPIs a medida</p>
+              </div>
+              <a href="#cotizador" className="mt-6 inline-block w-full text-center bg-custom-dark text-white font-medium py-3 rounded hover:opacity-90 transition">
+                Hablar con un asesor
+              </a>
+            </div>
+
           </div>
 
 
