@@ -193,7 +193,7 @@ const Clientes = () => {
               {/* Mensaje */}
               <textarea
                 name="mensaje"
-                placeholder="Mensaje *"
+                placeholder="Contanos un poco de tu empresa *"
                 rows="3"
                 className="border border-gray-300 rounded px-4 py-2 col-span-2 resize-none"
                 required
