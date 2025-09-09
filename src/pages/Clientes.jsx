@@ -105,6 +105,16 @@ const Clientes = () => {
                 <strong>Calidad garantizada</strong>: servicios alineados a SLA con foco en puntualidad y experiencia del cliente.
               </li>
             </ul>
+
+             {/* Botón debajo del bloque */}
+  <div className="mt-8">
+     <Link
+      to="/cotizar"
+      className="bg-custom-red text-white px-48 py-6 rounded shadow hover:bg-custom-red/80 transition"
+    >
+      Quiero Cotizar
+    </Link>
+  </div>
           </div>
 
           {/* 📋 Formulario a la derecha */}

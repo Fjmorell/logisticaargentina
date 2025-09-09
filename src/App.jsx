@@ -14,6 +14,8 @@ import MensajeTransportista from "@/components/MensajeTransportista";
 import RecuperarPasswordPage from "@/pages/RecuperarPassword";
 import BannerDetail from "./pages/BannerDetail";
 import Clientes from "./pages/Clientes";
+import Cotizar from "./pages/Cotizar";
+
 
 // ⬇️ IMPORTANTE: asegurate de importar el botón
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -30,6 +32,8 @@ function App() {
         <Route path="/formulario-choferes" element={<FormularioChoferes />} />
         <Route path="/formulario-comisionista" element={<FormularioComisionistaPage />} />
         <Route path="/clientes" element={<Clientes />} />
+        <Route path="/cotizar" element={<Cotizar />} />
+
         <Route path="/mensaje" element={<Mensaje />} />
         <Route path="/mensaje-transportista" element={<MensajeTransportista />} />
         <Route
