@@ -12,8 +12,8 @@ const COUNT_BANDS = {
 };
 
 const SIZE_RATES = {
-  small: { label: "Hasta 35 kg",  perPackage: 2450 },
-  large: { label: "Más de 35 kg", perPackage: 2550 },
+  small: { label: "Hasta 35 kg",  perPackage: 2250 },
+  large: { label: "Más de 35 kg", perPackage: 2350 },
 };
 
 const DISTANCE_BANDS = {
