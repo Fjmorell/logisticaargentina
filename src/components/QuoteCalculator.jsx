@@ -250,26 +250,6 @@ export default function QuoteCalculator() {
             </div>
           </div>
 
-          {/* Destino */}
-          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <label className="block text-sm font-medium mb-1 text-blue-800">País (destino)</label>
-              <select name="destinoPais" value={form.destinoPais} onChange={onChange} className="w-full border rounded-lg px-4 py-2">
-                <option>Argentina</option>
-                <option>Chile</option>
-                <option>Uruguay</option>
-                <option>Paraguay</option>
-              </select>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <label className="block text-sm font-medium mb-1 text-blue-800">Provincia (destino)</label>
-              <input name="destinoProvincia" value={form.destinoProvincia} onChange={onChange} className="w-full border rounded-lg px-4 py-2" placeholder="Ej: Córdoba" />
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <label className="block text-sm font-medium mb-1 text-blue-800">Ciudad (destino)</label>
-              <input name="destinoCiudad" value={form.destinoCiudad} onChange={onChange} className="w-full border rounded-lg px-4 py-2" placeholder="Ej: Córdoba Capital" />
-            </div>
-          </div>
 
           {/* Seguro / Valor declarado */}
           <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
