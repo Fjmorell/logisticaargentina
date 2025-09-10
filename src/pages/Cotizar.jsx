@@ -89,9 +89,7 @@ const Cotizar = () => {
                 <p><span className="font-semibold">Escalabilidad:</span> Baja</p>
                 <p><span className="font-semibold">Trazabilidad:</span> Limitada (depende de tu sistema)</p>
               </div>
-              <a href="#cotizador" className="mt-6 inline-block w-full text-center bg-gray-200 text-custom-dark font-medium py-3 rounded hover:bg-gray-300 transition">
-                Evaluar costos actuales
-              </a>
+              
             </div>
             {/* Columna 2 - Business (Recomendado) */}
             <div className="relative border-2 rounded-2xl p-6 shadow-md bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg border-custom-red" >
