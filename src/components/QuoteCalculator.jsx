@@ -3,17 +3,16 @@ import React, { useMemo, useState } from "react";
 
 /** ======= TABLAS DE TARIFAS (EDITABLES) ======= */
 const COUNT_BANDS = {
-  "0-10":  { label: "0-10",  assumed: 10,  discount: 1.00 },
-  "11-20": { label: "11-20", assumed: 20,  discount: 0.97 },
-  "21-30": { label: "21-30", assumed: 30,  discount: 0.94 },
-  "31-40": { label: "31-40", assumed: 40,  discount: 0.91 },
-  "41-50": { label: "41-50", assumed: 50,  discount: 0.88 },
-  "50+":   { label: "+50",   assumed: 60,  discount: 0.85 },
+  "1-10": { label: "1-10", assumed: 10, pricePerPackage: 3500 },
+  "11-20": { label: "11-20", assumed: 20, pricePerPackage: 3150 },
+  "21-40": { label: "21-40", assumed: 40, pricePerPackage: 2835 },
+  "40+": { label: "+40", assumed: 50, pricePerPackage: 2500 },
 };
 
-const SIZE_RATES = {
-  small: { label: "Hasta 35 kg",  perPackage: 2250 },
-  large: { label: "Más de 35 kg", perPackage: 2350 },
+const WEIGHT_RATES = {
+  "1-100": { label: "1-100 kg", perKg: 25 },      // $25 por kg
+  "101-200": { label: "101-200 kg", perKg: 22 },  // $22 por kg
+  "200+": { label: "+200 kg", perKg: 19 },        // $19 por kg
 };
 
 const DISTANCE_BANDS = {
@@ -24,8 +23,8 @@ const DISTANCE_BANDS = {
 
 const TURNOS = {
   normal: { label: "Sin urgencia", recargo: 1.00 },
-  mañana: { label: "Turno mañana (8-12hs)", recargo: 1.30 }, // +30% (modificado)
-  tarde:  { label: "Turno tarde (13-17hs)", recargo: 1.20 }, // +20% (modificado)
+  mañana: { label: "Turno mañana (8-12hs)", recargo: 1.30 }, // +30%
+  tarde:  { label: "Turno tarde (13-17hs)", recargo: 1.20 }, // +20%
 };
 
 const SURCHARGES = {
@@ -42,8 +41,8 @@ const PROMO = {
 export default function QuoteCalculator() {
   const [form, setForm] = useState({
     // Rangos
-    paquetesBand: "0-10",
-    size: "small",
+    paquetesBand: "1-10",
+    weightBand: "1-100",
     distanceBand: "0-50",
 
     // Ubicación
@@ -70,27 +69,44 @@ export default function QuoteCalculator() {
   /** ======= CÁLCULO BASE ======= */
   const price = useMemo(() => {
     const count = COUNT_BANDS[form.paquetesBand];
-    const size = SIZE_RATES[form.size];
+    const weight = WEIGHT_RATES[form.weightBand];
     const dist = DISTANCE_BANDS[form.distanceBand];
     const turno = TURNOS[form.turno];
 
-    if (!count || !size || !dist || !turno) {
+    if (!count || !weight || !dist || !turno) {
       return { subtotal: 0, total: 0, breakdown: [], error: "" };
     }
 
     const baseOperativa = 3000;              // fijo por servicio
     const costoDistancia = dist.fee;         // por banda de km
-    const paquetesSinDesc = size.perPackage * count.assumed;
-    const paquetesConDesc = Math.round(paquetesSinDesc * count.discount);
+    
+    // Calcular el costo por paquetes según la banda seleccionada
+    const costoPaquetes = count.assumed * count.pricePerPackage;
+    
+    // Calcular el peso medio según la banda seleccionada
+    let pesoMedio;
+    if (form.weightBand === "1-100") {
+      pesoMedio = 50; // Valor medio de la banda 1-100 kg
+    } else if (form.weightBand === "101-200") {
+      pesoMedio = 150; // Valor medio de la banda 101-200 kg
+    } else {
+      pesoMedio = 250; // Valor estimado para +200 kg
+    }
+    
+    const costoPeso = Math.round(pesoMedio * weight.perKg);
 
-    let subtotal = baseOperativa + costoDistancia + paquetesConDesc;
+    let subtotal = baseOperativa + costoDistancia + costoPaquetes + costoPeso;
 
     const breakdown = [
       { label: "Base operativa", value: baseOperativa },
       { label: `Distancia (${dist.label})`, value: costoDistancia },
       {
-        label: `Paquetes (${count.label}) · ${size.label} ${count.discount < 1 ? `(desc. ${(100 - count.discount * 100).toFixed(0)}%)` : ""}`,
-        value: paquetesConDesc,
+        label: `Paquetes (${count.label}) · $${count.pricePerPackage.toLocaleString()}/paq`,
+        value: costoPaquetes,
+      },
+      {
+        label: `Peso (${weight.label}) · $${weight.perKg}/kg`,
+        value: costoPeso,
       },
     ];
 
@@ -135,7 +151,7 @@ export default function QuoteCalculator() {
     const msg = [
       "¡Hola! Quiero cotizar una distribución 👇",
       `• Cantidad de paquetes: ${COUNT_BANDS[form.paquetesBand]?.label || "-"}`,
-      `• Tamaño: ${SIZE_RATES[form.size]?.label || "-"}`,
+      `• Peso total: ${WEIGHT_RATES[form.weightBand]?.label || "-"}`,
       `• Kilómetros (aprox.): ${DISTANCE_BANDS[form.distanceBand]?.label || "-"}`,
       `• Turno: ${TURNOS[form.turno]?.label || "-"}`,
       `• Origen: ${form.origenCiudad || "-"}, ${form.origenProvincia || "-"}, ${form.origenPais || "-"}`,
@@ -180,19 +196,20 @@ export default function QuoteCalculator() {
             </p>
           </div>
 
-          {/* Tamaño */}
+          {/* Peso total */}
           <div className="bg-gray-50 p-4 rounded-lg">
             <label className="block text-sm font-medium mb-1 text-blue-800">
-              <i className="fas fa-ruler-combined mr-2"></i>Tamaño del paquete
+              <i className="fas fa-weight-hanging mr-2"></i>Peso total de la carga
             </label>
             <select
-              name="size"
-              value={form.size}
+              name="weightBand"
+              value={form.weightBand}
               onChange={onChange}
               className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="small">{SIZE_RATES.small.label}</option>
-              <option value="large">{SIZE_RATES.large.label}</option>
+              <option value="1-100">1-100 kg</option>
+              <option value="101-200">101-200 kg</option>
+              <option value="200+">+200 kg</option>
             </select>
           </div>
 
@@ -250,6 +267,26 @@ export default function QuoteCalculator() {
             </div>
           </div>
 
+          {/* Destino */}
+          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="block text-sm font-medium mb-1 text-blue-800">País (destino)</label>
+              <select name="destinoPais" value={form.destinoPais} onChange={onChange} className="w-full border rounded-lg px-4 py-2">
+                <option>Argentina</option>
+                <option>Chile</option>
+                <option>Uruguay</option>
+                <option>Paraguay</option>
+              </select>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="block text-sm font-medium mb-1 text-blue-800">Provincia (destino)</label>
+              <input name="destinoProvincia" value={form.destinoProvincia} onChange={onChange} className="w-full border rounded-lg px-4 py-2" placeholder="Ej: Córdoba" />
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <label className="block text-sm font-medium mb-1 text-blue-800">Ciudad (destino)</label>
+              <input name="destinoCiudad" value={form.destinoCiudad} onChange={onChange} className="w-full border rounded-lg px-4 py-2" placeholder="Ej: Córdoba Capital" />
+            </div>
+          </div>
 
           {/* Seguro / Valor declarado */}
           <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
