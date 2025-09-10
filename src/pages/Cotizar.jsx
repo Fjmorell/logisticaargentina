@@ -125,7 +125,7 @@ const Cotizar = () => {
             </div>
 
                                   {/* Columna 4 - Híbrido (Transición) */}
-<div className="border rounded-2xl p-6 shadow-sm bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+<div className="relative border-2 rounded-2xl p-6 shadow-md bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg border-custom-blue" >
   <div className="flex items-center justify-between">
     <h3 className="text-xl font-semibold text-custom-dark">Basic</h3>
     <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Paso intermedio</span>
@@ -162,7 +162,7 @@ const Cotizar = () => {
 </div>
 
             {/* Columna 3 - Personalizar */}
-            <div className="border rounded-2xl p-6 shadow-sm bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+<div className="relative border-2 rounded-2xl p-6 shadow-md bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg border-purple-500">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-semibold text-custom-dark">Personalizar</h3>
                 <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">A medida</span>

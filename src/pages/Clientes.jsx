@@ -1,15 +1,42 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import HeaderBottom from "@/components/HeaderBottom"; // 👈 nuevo
+import HeaderBottom from "@/components/HeaderBottom";
+import emailjs from "emailjs-com";
 
-
-// importa la imagen para usarla en el <img>
+// logo de la empresa
 import imagenLogistica from "@/assets/imagenlogisticacliente.jpeg";
+import logo from "@/assets/Logo.png"; // 👈 poné tu logo aquí
 
 const Clientes = () => {
+  const form = useRef();
+  const [showPopup, setShowPopup] = useState(false);
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_d9v74oq",     // Service ID
+        "template_nul9thn",    // Template ID real
+        form.current,
+        "JjxWeNLY6AHDKkGBn"    // Public Key
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setShowPopup(true); // 👈 abre el pop-up
+          form.current.reset();
+        },
+        (error) => {
+          console.log(error.text);
+          alert("Error al enviar la consulta. Por favor, intenta nuevamente.");
+        }
+      );
+  };
+
   return (
     <>
       <Navbar />
@@ -30,49 +57,46 @@ const Clientes = () => {
         ¿Tercerizar o tener vehículo propio? <span className="text-red-600">Compará y decidí</span>
       </h2>
 
-     {/* ✅ Pros vs Contras estilo mitad/mitad */}
-<section className="w-full grid grid-cols-1 md:grid-cols-2 text-white">
-  {/* PROS */}
-  <div className="bg-red-700 p-10 flex flex-col justify-center">
-    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-      ✅ Beneficios de tercerizar el transporte
-    </h2>
-    <ul className="space-y-4 list-disc list-inside">
-      <li>Ahorrás en combustible, mantenimiento y seguros</li>
-      <li>No necesitás contratar ni gestionar choferes</li>
-      <li>Te enfocás 100% en tu negocio</li>
-      <li>Accedés a trazabilidad y reportes en tiempo real</li>
-      <li>Flexibilidad para escalar según tu demanda</li>
-    </ul>
-  </div>
+      {/* ✅ Pros vs Contras estilo mitad/mitad */}
+      <section className="w-full grid grid-cols-1 md:grid-cols-2 text-white">
+        {/* PROS */}
+        <div className="bg-red-700 p-10 flex flex-col justify-center">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            ✅ Beneficios de tercerizar el transporte
+          </h2>
+          <ul className="space-y-4 list-disc list-inside">
+            <li>Ahorrás en combustible, mantenimiento y seguros</li>
+            <li>No necesitás contratar ni gestionar choferes</li>
+            <li>Te enfocás 100% en tu negocio</li>
+            <li>Accedés a trazabilidad y reportes en tiempo real</li>
+            <li>Flexibilidad para escalar según tu demanda</li>
+          </ul>
+        </div>
 
-  {/* CONTRAS */}
-  <div className="bg-gray-200 text-gray-900 p-10 flex flex-col justify-center">
-    <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-red-700">
-      ❌ Costos de tener vehículo propio
-    </h2>
-    <ul className="space-y-4 list-disc list-inside">
-      <li>Gastos de mantenimiento</li>
-      <li>Seguros y patentes</li>
-      <li>Sueldos, cargas sociales y conflictos laborales con choferes</li>
-      <li>Repuestos, talleres y grúas</li>
-      <li>El estrés de coordinar todo eso</li>
-    </ul>
-  </div>
-</section>
+        {/* CONTRAS */}
+        <div className="bg-gray-200 text-gray-900 p-10 flex flex-col justify-center">
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-red-700">
+            ❌ Costos de tener vehículo propio
+          </h2>
+          <ul className="space-y-4 list-disc list-inside">
+            <li>Gastos de mantenimiento</li>
+            <li>Seguros y patentes</li>
+            <li>Sueldos, cargas sociales y conflictos laborales con choferes</li>
+            <li>Repuestos, talleres y grúas</li>
+            <li>El estrés de coordinar todo eso</li>
+          </ul>
+        </div>
+      </section>
 
-
-
-     {/* 🚚 Imagen completa debajo (ancho total con altura fija) */}
-<section className="w-full">
-  <img
-    src={imagenLogistica}
-    alt="Logística sin preocupaciones"
-    className="w-full h-[400px] object-cover"
-  />
-  
-</section>
-<HeaderBottom />
+      {/* 🚚 Imagen completa debajo (ancho total con altura fija) */}
+      <section className="w-full">
+        <img
+          src={imagenLogistica}
+          alt="Logística sin preocupaciones"
+          className="w-full h-[400px] object-cover"
+        />
+      </section>
+      <HeaderBottom />
 
       {/* 🚛 Beneficios + Formulario en dos columnas */}
       <section className="bg-white py-20 px-6 text-gray-800">
@@ -107,15 +131,15 @@ const Clientes = () => {
               </li>
             </ul>
 
-             {/* Botón debajo del bloque */}
-  <div className="mt-8">
-     <Link
-      to="/cotizar"
-      className="bg-custom-red text-white px-48 py-8 rounded shadow hover:bg-custom-red/80 transition"
-    >
-      Quiero Cotizar
-    </Link>
-  </div>
+            {/* Botón debajo del bloque */}
+            <div className="mt-8">
+              <Link
+                to="/cotizar"
+                className="bg-custom-red text-white px-48 py-8 rounded shadow hover:bg-custom-red/80 transition"
+              >
+                Quiero Cotizar
+              </Link>
+            </div>
           </div>
 
           {/* 📋 Formulario a la derecha */}
@@ -123,7 +147,11 @@ const Clientes = () => {
             <h3 className="text-2xl font-bold mb-6 text-custom-dark">
               Completá el formulario y obtené una demo gratuita
             </h3>
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form 
+              ref={form}
+              onSubmit={sendEmail}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
               {/* Nombre */}
               <input
                 type="text"
@@ -176,7 +204,7 @@ const Clientes = () => {
               {/* Correo */}
               <input
                 type="email"
-                name="correo"
+                name="email"
                 placeholder="Correo *"
                 className="border border-gray-300 rounded px-4 py-2 col-span-2"
                 required
@@ -220,7 +248,25 @@ const Clientes = () => {
           </p>
         </div>
       </section>
-       
+
+       {/* ✅ POPUP DE CONFIRMACIÓN */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md">
+            <img src={logo} alt="Logo" className="mx-auto mb-4 w-96 h-96 object-contain" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Gracias!</h2>
+            <p className="text-gray-600">
+              Un asesor se estara comunicando con usted.
+            </p>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="mt-6 bg-custom-red text-white px-6 py-2 rounded hover:bg-custom-red/80 transition"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
 
       <Footer />
       <WhatsAppButton />
