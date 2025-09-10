@@ -133,16 +133,20 @@ const Cotizar = () => {
     <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Paso intermedio</span>
   </div>
   <p className="mt-3 text-gray-600">
-    Combiná tu flota actual con nuestra red para picos, rutas nuevas o zonas no cubiertas.
+    Combiná tu flota actual con la nuestra para potenciar tu rendimiento, liberar recursos y enfocarte en hacer crecer tu negocio. Accedé a rutas nuevas y zonas no cubiertas a nivel local.
   </p>
 
   <ul className="mt-6 space-y-3 text-sm">
-    <li>🔀 Uso mixto: propia + 3PL según demanda</li>
-    <li>📈 Absorbé picos sin comprar unidades</li>
-    <li>🗺️ Expandí cobertura de forma inmediata</li>
-    <li>📊 KPIs unificados y control por portal</li>
-    <li>💸 Reducción gradual de costos fijos</li>
-    <li>🧩 Ideal para migraciones por etapas</li>
+    <li>✅ Uso mixto: flota propia + flota SLA</li>
+    <li>✅ Absorbé picos sin comprar unidades</li>
+    <li>✅ Expandí cobertura de forma inmediata</li>
+    <li>✅ Hasta 30 paquetes por envío</li>
+    <li>✅ Distribución hasta 100 km por operación</li>
+    <li>✅ Planificación inteligente de entregas</li>
+    <li>✅ Ruteo optimizado para máxima eficiencia</li>
+    <li>✅ Seguimiento en tiempo real de tus paquetes</li>
+    <li>✅ Reducción gradual de costos fijos</li>
+    <li>✅ Ideal para migraciones por etapas</li>
   </ul>
 
   <div className="mt-6 border-t pt-4 text-sm text-gray-600">

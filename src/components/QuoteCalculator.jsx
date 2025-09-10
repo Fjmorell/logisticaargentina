@@ -22,21 +22,16 @@ const DISTANCE_BANDS = {
   "100+":   { label: "+ de 100 km", fee: 15000 },
 };
 
-/** ======= FRANJAS HORARIAS (recargo) ======= */
-const TIME_SLOTS = {
-  manana: { label: "Mañana (8 a 12 hs)", surcharge: 0.20 }, // +20%
-  tarde:  { label: "Tarde (13 a 17 hs)", surcharge: 0.10 }, // +10%
-};
-
 const SURCHARGES = {
-  seguro: 0.012,  // 1.2% del valor declarado
+  urgencia24h: 1.25, // +25% sobre subtotal (sin seguro)
+  seguro: 0.012,     // 1.2% del valor declarado
 };
 
 /** ======= PROMO / OFERTA ======= */
 const PROMO = {
   enabled: true,
-  label: "Bonificado", // texto mostrado en badge/WhatsApp
-  percent: 0.15,       // 15% de descuento sobre el servicio (sin seguro)
+  label: "Oferta online -15%",
+  percent: 0.15, // 15% de descuento sobre el subtotal del servicio (sin seguro)
 };
 
 export default function QuoteCalculator() {
@@ -54,10 +49,8 @@ export default function QuoteCalculator() {
     destinoProvincia: "",
     destinoCiudad: "",
 
-    // Franja horaria
-    timeSlot: "", // "manana" | "tarde"
-
-    // Seguro
+    // Extras
+    urgencia24h: false,
     seguro: true,
     valorDeclarado: "",
 
@@ -95,12 +88,11 @@ export default function QuoteCalculator() {
       },
     ];
 
-    // Franja horaria (recargo)
-    if (form.timeSlot && TIME_SLOTS[form.timeSlot]) {
-      const { surcharge, label } = TIME_SLOTS[form.timeSlot];
+    // Urgencia 24h (multiplicador sobre subtotal del servicio)
+    if (form.urgencia24h) {
       const prev = subtotal;
-      subtotal = Math.round(subtotal * (1 + surcharge));
-      breakdown.push({ label: `${label} (+${(surcharge * 100).toFixed(0)}%)`, value: subtotal - prev });
+      subtotal = Math.round(subtotal * SURCHARGES.urgencia24h);
+      breakdown.push({ label: "Urgencia 24h (+25%)", value: subtotal - prev });
     }
 
     // Seguro (sobre valor declarado)
@@ -122,7 +114,7 @@ export default function QuoteCalculator() {
   const promo = useMemo(() => {
     if (!PROMO.enabled) return { totalPromo: price.total, descuento: 0 };
     const descuento = Math.round((price.subtotal || 0) * PROMO.percent);
-    const extras = (price.total || 0) - (price.subtotal || 0); // seguro/otros
+    const extras = (price.total || 0) - (price.subtotal || 0); // seguro y otros
     const totalPromo = Math.max((price.subtotal || 0) - descuento, 0) + extras;
     return { totalPromo, descuento };
   }, [price]);
@@ -135,9 +127,10 @@ export default function QuoteCalculator() {
       `• Cantidad de paquetes: ${COUNT_BANDS[form.paquetesBand]?.label || "-"}`,
       `• Tamaño: ${SIZE_RATES[form.size]?.label || "-"}`,
       `• Kilómetros (aprox.): ${DISTANCE_BANDS[form.distanceBand]?.label || "-"}`,
-      `• Franja horaria: ${form.timeSlot ? TIME_SLOTS[form.timeSlot].label : "-"}`,
       `• Origen: ${form.origenCiudad || "-"}, ${form.origenProvincia || "-"}, ${form.origenPais || "-"}`,
       `• Destino: ${form.destinoCiudad || "-"}, ${form.destinoProvincia || "-"}, ${form.destinoPais || "-"}`,
+      `• Urgencia 24h: ${form.urgencia24h ? "Sí" : "No"}`,
+      `• Seguro: ${form.seguro ? "Sí" : "No"} ${form.valorDeclarado ? `(valor declarado $${Number(form.valorDeclarado).toLocaleString()})` : ""}`,
       "",
       `Precio de lista: $${(price.total || 0).toLocaleString()}`,
       PROMO.enabled ? `Precio especial (${PROMO.label}): $${(promo.totalPromo || 0).toLocaleString()}` : "",
@@ -240,30 +233,14 @@ export default function QuoteCalculator() {
               <label className="block text-sm font-medium mb-1">Provincia (destino)</label>
               <input name="destinoProvincia" value={form.destinoProvincia} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Córdoba" />
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Ciudad (destino)</label>
-              <input name="destinoCiudad" value={form.destinoCiudad} onChange={onChange} className="w-full border rounded px-3 py-2" placeholder="Ej: Río Cuarto" />
-            </div>
           </div>
 
-          {/* Franja horaria / Seguro / Valor declarado */}
+          {/* Seguro / Urgencia / Valor declarado */}
           <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Franja horaria</label>
-              <select
-                name="timeSlot"
-                value={form.timeSlot}
-                onChange={onChange}
-                className="w-full border rounded px-3 py-2"
-              >
-                <option value="">Seleccionar</option>
-                {Object.entries(TIME_SLOTS).map(([key, slot]) => (
-                  <option key={key} value={key}>
-                    {slot.label} (+{(slot.surcharge * 100).toFixed(0)}%)
-                  </option>
-                ))}
-              </select>
-            </div>
+            <label className="flex items-center gap-2">
+              <input id="urgencia24h" name="urgencia24h" type="checkbox" checked={form.urgencia24h} onChange={onChange} />
+              <span className="text-sm">Urgencia 24h (+25%)</span>
+            </label>
 
             <label className="flex items-center gap-2">
               <input id="seguro" name="seguro" type="checkbox" checked={form.seguro} onChange={onChange} />
