@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+// src/pages/Clientes.jsx
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -6,9 +7,70 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import HeaderBottom from "@/components/HeaderBottom";
 import emailjs from "emailjs-com";
 
-// logo de la empresa
+// Assets
 import imagenLogistica from "@/assets/imagenlogisticacliente.jpeg";
-import logo from "@/assets/Logo.png"; // 👈 poné tu logo aquí
+import logo from "@/assets/Logo.png"; // tu logo
+
+/** ===== Modal de agradecimiento con animación ===== */
+function ThankYouModal({ open, onClose }) {
+  const [visible, setVisible] = useState(false);
+
+  // Transición de entrada
+  useEffect(() => {
+    if (open) {
+      const t = setTimeout(() => setVisible(true), 10);
+      return () => clearTimeout(t);
+    } else {
+      setVisible(false);
+    }
+  }, [open]);
+
+  // Cerrar con ESC
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    if (open) window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center
+                  transition-colors duration-500
+                  ${visible ? "bg-black/50" : "bg-black/0"}`}
+      onClick={onClose} // cerrar al clickear el overlay
+    >
+      <div
+        className={`bg-white rounded-2xl shadow-xl p-8 text-center max-w-md mx-4
+                    transform transition-all duration-300
+                    ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+        onClick={(e) => e.stopPropagation()} // evitar cierre si clickean dentro
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="thanks-title"
+      >
+        <img
+          src={logo}
+          alt="Logística Argentina"
+          className="mx-auto mb-4 w-28 h-28 object-contain"
+        />
+        <h2 id="thanks-title" className="text-2xl font-bold text-gray-800 mb-2">
+          ¡Gracias!
+        </h2>
+        <p className="text-gray-600">
+          Un asesor se estara comunicando con usted.
+        </p>
+        <button
+          onClick={onClose}
+          className="mt-6 bg-custom-red text-white px-6 py-2 rounded-lg hover:bg-custom-red/80 transition"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  );
+}
 
 const Clientes = () => {
   const form = useRef();
@@ -25,13 +87,15 @@ const Clientes = () => {
         "JjxWeNLY6AHDKkGBn"    // Public Key
       )
       .then(
-        (result) => {
-          console.log(result.text);
-          setShowPopup(true); // 👈 abre el pop-up
+        () => {
+          setShowPopup(true);
           form.current.reset();
+
+          // 🔔 Autocerrar a los 4s (ajustable o quitar si no lo querés)
+          setTimeout(() => setShowPopup(false), 4000);
         },
         (error) => {
-          console.log(error.text);
+          console.error(error?.text || error);
           alert("Error al enviar la consulta. Por favor, intenta nuevamente.");
         }
       );
@@ -50,11 +114,12 @@ const Clientes = () => {
           frameBorder="0"
           allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-        ></iframe>
+        />
       </section>
 
       <h2 className="text-2xl md:text-4xl font-bold text-center mb-10 mt-6 text-custom-dark">
-        ¿Tercerizar o tener vehículo propio? <span className="text-red-600">Compará y decidí</span>
+        ¿Tercerizar o tener vehículo propio?{" "}
+        <span className="text-red-600">Compará y decidí</span>
       </h2>
 
       {/* ✅ Pros vs Contras estilo mitad/mitad */}
@@ -88,7 +153,7 @@ const Clientes = () => {
         </div>
       </section>
 
-      {/* 🚚 Imagen completa debajo (ancho total con altura fija) */}
+      {/* 🚚 Imagen completa debajo */}
       <section className="w-full">
         <img
           src={imagenLogistica}
@@ -96,6 +161,7 @@ const Clientes = () => {
           className="w-full h-[400px] object-cover"
         />
       </section>
+
       <HeaderBottom />
 
       {/* 🚛 Beneficios + Formulario en dos columnas */}
@@ -113,8 +179,7 @@ const Clientes = () => {
             </p>
             <ul className="space-y-3 list-disc list-inside">
               <li>
-                <strong>Reducción de costos fijos</strong>: evitás compra y mantenimiento de flota,{" "}
-                sueldos, seguros y gastos operativos.
+                <strong>Reducción de costos fijos</strong>: evitás compra y mantenimiento de flota, sueldos, seguros y gastos operativos.
               </li>
               <li>
                 <strong>Flexibilidad y escalabilidad</strong>: ajustás la capacidad sin sobrecargar estructura.
@@ -123,8 +188,7 @@ const Clientes = () => {
                 <strong>Cobertura nacional inmediata</strong>: acceso a transportistas validados y disponibles en todo el país.
               </li>
               <li>
-                <strong>Gestión profesional 360°</strong>: validación, trazabilidad,{" "}
-                asignación inteligente de carga, seguimiento en tiempo real.
+                <strong>Gestión profesional 360°</strong>: validación, trazabilidad, asignación inteligente de carga, seguimiento en tiempo real.
               </li>
               <li>
                 <strong>Calidad garantizada</strong>: servicios alineados a SLA con foco en puntualidad y experiencia del cliente.
@@ -147,93 +211,33 @@ const Clientes = () => {
             <h3 className="text-2xl font-bold mb-6 text-custom-dark">
               Completá el formulario y obtené una demo gratuita
             </h3>
-            <form 
-              ref={form}
-              onSubmit={sendEmail}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
-            >
-              {/* Nombre */}
-              <input
-                type="text"
-                name="nombre"
-                placeholder="Nombre *"
-                className="border border-gray-300 rounded px-4 py-2 col-span-1"
-                required
-              />
 
-              {/* Apellido */}
-              <input
-                type="text"
-                name="apellido"
-                placeholder="Apellido *"
-                className="border border-gray-300 rounded px-4 py-2 col-span-1"
-                required
-              />
-
-              {/* País */}
-              <select
-                name="pais"
-                className="border border-gray-300 rounded px-4 py-2 col-span-1"
-                required
-              >
+            <form ref={form} onSubmit={sendEmail} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="nombre" placeholder="Nombre *"
+                     className="border border-gray-300 rounded px-4 py-2 col-span-1" required />
+              <input type="text" name="apellido" placeholder="Apellido *"
+                     className="border border-gray-300 rounded px-4 py-2 col-span-1" required />
+              <select name="pais" className="border border-gray-300 rounded px-4 py-2 col-span-1" required>
                 <option value="">País *</option>
                 <option value="Argentina">Argentina</option>
                 <option value="Chile">Chile</option>
                 <option value="Uruguay">Uruguay</option>
                 <option value="Paraguay">Paraguay</option>
               </select>
+              <input type="text" name="cargo" placeholder="Cargo *"
+                     className="border border-gray-300 rounded px-4 py-2 col-span-1" required />
+              <input type="text" name="empresa" placeholder="Empresa *"
+                     className="border border-gray-300 rounded px-4 py-2 col-span-2" required />
+              <input type="email" name="email" placeholder="Correo *"
+                     className="border border-gray-300 rounded px-4 py-2 col-span-2" required />
+              <input type="tel" name="telefono" placeholder="Teléfono *"
+                     className="border border-gray-300 rounded px-4 py-2 col-span-2" required />
+              <textarea name="mensaje" placeholder="Contanos un poco de tu empresa *" rows="3"
+                        className="border border-gray-300 rounded px-4 py-2 col-span-2 resize-none" required />
 
-              {/* Cargo */}
-              <input
-                type="text"
-                name="cargo"
-                placeholder="Cargo *"
-                className="border border-gray-300 rounded px-4 py-2 col-span-1"
-                required
-              />
-
-              {/* Empresa */}
-              <input
-                type="text"
-                name="empresa"
-                placeholder="Empresa *"
-                className="border border-gray-300 rounded px-4 py-2 col-span-2"
-                required
-              />
-
-              {/* Correo */}
-              <input
-                type="email"
-                name="email"
-                placeholder="Correo *"
-                className="border border-gray-300 rounded px-4 py-2 col-span-2"
-                required
-              />
-
-              {/* Teléfono */}
-              <input
-                type="tel"
-                name="telefono"
-                placeholder="Teléfono *"
-                className="border border-gray-300 rounded px-4 py-2 col-span-2"
-                required
-              />
-
-              {/* Mensaje */}
-              <textarea
-                name="mensaje"
-                placeholder="Contanos un poco de tu empresa *"
-                rows="3"
-                className="border border-gray-300 rounded px-4 py-2 col-span-2 resize-none"
-                required
-              />
-
-              {/* Botón */}
               <div className="col-span-2 text-center mt-4">
-                <button
-                  type="submit"
-                  className="bg-custom-red text-white px-6 py-3 rounded hover:bg-custom-red/80 transition"
-                >
+                <button type="submit"
+                        className="bg-custom-red text-white px-6 py-3 rounded-lg hover:bg-custom-red/80 transition">
                   Enviar consulta
                 </button>
               </div>
@@ -249,24 +253,8 @@ const Clientes = () => {
         </div>
       </section>
 
-       {/* ✅ POPUP DE CONFIRMACIÓN */}
-      {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md">
-            <img src={logo} alt="Logo" className="mx-auto mb-4 w-96 h-96 object-contain" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Gracias!</h2>
-            <p className="text-gray-600">
-              Un asesor se estara comunicando con usted.
-            </p>
-            <button
-              onClick={() => setShowPopup(false)}
-              className="mt-6 bg-custom-red text-white px-6 py-2 rounded hover:bg-custom-red/80 transition"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Modal de confirmación */}
+      <ThankYouModal open={showPopup} onClose={() => setShowPopup(false)} />
 
       <Footer />
       <WhatsAppButton />

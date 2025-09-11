@@ -147,7 +147,7 @@ export default function QuoteCalculator() {
 
   /** ======= WHATSAPP ======= */
   const whatsappHref = useMemo(() => {
-    const phone = "54911XXXXXXXX"; // ← Reemplazá por tu número (sin + ni 00)
+    const phone = "5491156193199"; // ← Reemplazá por tu número (sin + ni 00)
     const msg = [
       "¡Hola! Quiero cotizar una distribución 👇",
       `• Cantidad de paquetes: ${COUNT_BANDS[form.paquetesBand]?.label || "-"}`,

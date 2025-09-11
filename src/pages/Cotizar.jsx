@@ -116,9 +116,15 @@ const Cotizar = () => {
                 <p><span className="font-semibold">Escalabilidad:</span> Alta</p>
                 <p><span className="font-semibold">Trazabilidad:</span> Full (portal/integ.)</p>
               </div>
-              <a href="#cotizador" className="mt-6 inline-block w-full text-center bg-custom-red text-white font-semibold py-3 rounded hover:bg-custom-red/90 transition">
-                Quiero migrar a Business
-              </a>
+              <a
+  href="https://wa.me/5491156193199?text=Hola! Quiero más info sobre el plan Business 🚀"
+  target="_blank"
+  rel="noreferrer"
+  className="mt-6 inline-block w-full text-center bg-custom-red text-white font-semibold py-3 rounded hover:bg-custom-red/90 transition"
+>
+  Quiero migrar a Business
+</a>
+
               <p className="mt-3 text-xs text-center text-gray-500">
                 Ideal para empresas que quieren bajar costos fijos y ganar velocidad.
               </p>
@@ -154,7 +160,9 @@ const Cotizar = () => {
   </div>
 
   <a
-    href="#cotizador"
+    href="https://wa.me/5491156193199?text=Hola! Quiero más info sobre el plan Basic 🚀"
+    target="_blank"
+  rel="noreferrer"
     className="mt-6 inline-block w-full text-center bg-custom-blue text-custom-dark font-medium py-3 rounded hover:opacity-90 transition"
   >
     Empezar transición
