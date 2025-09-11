@@ -198,18 +198,44 @@ const Cotizar = () => {
 
           </div>
 
+<div
+  className="
+    mt-10 
+    text-center 
+    bg-gradient-to-r 
+    from-custom-blue 
+    to-custom-blue-medium 
+    rounded-2xl 
+    p-4              /* menos padding en mobile */
+    md:p-6           /* padding normal en desktop */
+  "
+>
+  <p className="text-custom-dark font-medium text-sm md:text-base leading-relaxed">
+    Reducí costos fijos y ganá trazabilidad desde el primer mes.{" "}
+    <span className="font-semibold">
+      Te ayudamos a migrar sin frenar tu operación.
+    </span>
+  </p>
+  <a
+    href="#cotizador"
+    className="
+      inline-block 
+      mt-4 
+      bg-custom-red 
+      text-white 
+      font-semibold 
+      text-xs md:text-sm   /* letra más chica en mobile */
+      px-4 py-2 
+      rounded 
+      hover:bg-custom-red/90 
+      transition 
+    "
+  >
+    Cotizar en 2 minutos
+  </a>
+</div>
 
 
-
-          {/* Franja de cierre */}
-          <div className="mt-10 text-center bg-gradient-to-r from-custom-blue to-custom-blue-medium rounded-2xl p-6">
-            <p className="text-custom-dark font-medium">
-              Reducí costos fijos y ganá trazabilidad desde el primer mes. <span className="font-semibold">Te ayudamos a migrar sin frenar tu operación.</span>
-            </p>
-            <a href="#cotizador" className="inline-block mt-4 bg-custom-red text-white px-6 py-3 rounded hover:bg-custom-red/90 transition">
-              Cotizar en 2 minutos
-            </a>
-          </div>
         </div>
       </section>
 

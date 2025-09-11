@@ -197,12 +197,26 @@ const Clientes = () => {
 
             {/* Botón debajo del bloque */}
             <div className="mt-8">
-              <Link
-                to="/cotizar"
-                className="bg-custom-red text-white px-48 py-8 rounded shadow hover:bg-custom-red/80 transition"
-              >
-                Quiero Cotizar
-              </Link>
+      <Link
+  to="/cotizar"
+  className="
+    bg-custom-red 
+    text-white 
+    text-sm md:text-base 
+    font-semibold 
+    w-full md:w-auto   /* ocupa todo el ancho en mobile, auto en desktop */
+    px-6 py-3 
+    md:px-12 md:py-5 
+    rounded 
+    shadow 
+    hover:bg-custom-red/80 
+    transition 
+    block text-center   /* asegura que el texto quede centrado */
+  "
+>
+  Quiero Cotizar
+</Link>
+
             </div>
           </div>
 
@@ -212,36 +226,81 @@ const Clientes = () => {
               Completá el formulario y obtené una demo gratuita
             </h3>
 
-            <form ref={form} onSubmit={sendEmail} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" name="nombre" placeholder="Nombre *"
-                     className="border border-gray-300 rounded px-4 py-2 col-span-1" required />
-              <input type="text" name="apellido" placeholder="Apellido *"
-                     className="border border-gray-300 rounded px-4 py-2 col-span-1" required />
-              <select name="pais" className="border border-gray-300 rounded px-4 py-2 col-span-1" required>
-                <option value="">País *</option>
-                <option value="Argentina">Argentina</option>
-                <option value="Chile">Chile</option>
-                <option value="Uruguay">Uruguay</option>
-                <option value="Paraguay">Paraguay</option>
-              </select>
-              <input type="text" name="cargo" placeholder="Cargo *"
-                     className="border border-gray-300 rounded px-4 py-2 col-span-1" required />
-              <input type="text" name="empresa" placeholder="Empresa *"
-                     className="border border-gray-300 rounded px-4 py-2 col-span-2" required />
-              <input type="email" name="email" placeholder="Correo *"
-                     className="border border-gray-300 rounded px-4 py-2 col-span-2" required />
-              <input type="tel" name="telefono" placeholder="Teléfono *"
-                     className="border border-gray-300 rounded px-4 py-2 col-span-2" required />
-              <textarea name="mensaje" placeholder="Contanos un poco de tu empresa *" rows="3"
-                        className="border border-gray-300 rounded px-4 py-2 col-span-2 resize-none" required />
+            <form
+  ref={form}
+  onSubmit={sendEmail}
+  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+>
+  <input
+    type="text"
+    name="nombre"
+    placeholder="Nombre *"
+    className="border border-gray-300 rounded px-4 py-2 w-full"
+    required
+  />
+  <input
+    type="text"
+    name="apellido"
+    placeholder="Apellido *"
+    className="border border-gray-300 rounded px-4 py-2 w-full"
+    required
+  />
+  <select
+    name="pais"
+    className="border border-gray-300 rounded px-4 py-2 w-full"
+    required
+  >
+    <option value="">País *</option>
+    <option value="Argentina">Argentina</option>
+    <option value="Chile">Chile</option>
+    <option value="Uruguay">Uruguay</option>
+    <option value="Paraguay">Paraguay</option>
+  </select>
+  <input
+    type="text"
+    name="cargo"
+    placeholder="Cargo *"
+    className="border border-gray-300 rounded px-4 py-2 w-full"
+    required
+  />
+  <input
+    type="text"
+    name="empresa"
+    placeholder="Empresa *"
+    className="border border-gray-300 rounded px-4 py-2 w-full md:col-span-2"
+    required
+  />
+  <input
+    type="email"
+    name="email"
+    placeholder="Correo *"
+    className="border border-gray-300 rounded px-4 py-2 w-full md:col-span-2"
+    required
+  />
+  <input
+    type="tel"
+    name="telefono"
+    placeholder="Teléfono *"
+    className="border border-gray-300 rounded px-4 py-2 w-full md:col-span-2"
+    required
+  />
+  <textarea
+    name="mensaje"
+    placeholder="Contanos un poco de tu empresa *"
+    rows="3"
+    className="border border-gray-300 rounded px-4 py-2 w-full resize-none md:col-span-2"
+    required
+  />
+  <div className="col-span-1 md:col-span-2 text-center mt-4">
+    <button
+      type="submit"
+      className="bg-custom-red text-white px-6 py-3 w-full md:w-auto rounded-lg hover:bg-custom-red/80 transition"
+    >
+      Enviar consulta
+    </button>
+  </div>
+</form>
 
-              <div className="col-span-2 text-center mt-4">
-                <button type="submit"
-                        className="bg-custom-red text-white px-6 py-3 rounded-lg hover:bg-custom-red/80 transition">
-                  Enviar consulta
-                </button>
-              </div>
-            </form>
           </div>
         </div>
 
