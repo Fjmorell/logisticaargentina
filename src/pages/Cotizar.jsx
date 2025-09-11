@@ -97,27 +97,29 @@ const Cotizar = () => {
                 Recomendado
               </span>
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-custom-dark">Business</h3>
+                <h3 className="text-xl font-semibold text-custom-dark">Empresario – Plan Premium</h3>
                 <span className="text-xs bg-custom-blue text-custom-dark px-2 py-1 rounded">Nuestro servicio</span>
               </div>
               <p className="mt-3 text-gray-600">
-                Pagás por envío, con cobertura nacional y SLA medibles. Sin flota propia.
+                Pagás por volumen con cobertura total, integración avanzada y soporte exclusivo. Diseñado para compañías que necesitan escalar operaciones sin límites.
               </p>
               <ul className="mt-6 space-y-3 text-sm">
-                <li>✅ Costo variable por envío (sin CAPEX)</li>
-                <li>✅ Cobertura federal con transportistas validados</li>
-                <li>✅ Trazabilidad y seguimiento en tiempo real</li>
-                <li>✅ Escala inmediata en picos y campañas</li>
-                <li>✅ KPIs y SLA alineados a tu negocio</li>
-                <li>✅ Soporte operativo dedicado</li>
+                <li>✅ Flota  nuestra → distribución total de tu mercadería</li>
+                <li>✅ Cobertura full: local e interior</li>
+                <li>✅ Más de 50 paquetes por envío</li>
+                <li>✅ Cobertura superior a 100 km</li>
+                <li>✅ Ruteo optimizado y planificación para máxima eficiencia</li>
+                <li>✅ Seguimiento en tiempo real de tus paquetes</li>
+                <li>✅ Reducción total de costos fijos (pólizas, choferes, daños de unidades)</li>
+                <li>✅ Migración total de la distribución: vos solo enfocate en crecer</li>
               </ul>
               <div className="mt-6 border-t pt-4 text-sm text-gray-600">
-                <p><span className="font-semibold">Costo:</span> Variable y optimizado</p>
-                <p><span className="font-semibold">Escalabilidad:</span> Alta</p>
-                <p><span className="font-semibold">Trazabilidad:</span> Full (portal/integ.)</p>
+                <p><span className="font-semibold">Costo:</span> Volumen optimizado (variable → decreciente)</p>
+                <p><span className="font-semibold">Escalabilidad:</span> Máxima</p>
+                <p><span className="font-semibold">Trazabilidad:</span> Total (portal + integración completa)</p>
               </div>
               <a
-  href="https://wa.me/5491156193199?text=Hola! Quiero más info sobre el plan Business 🚀"
+  href="https://wa.me/5491156193199?text=Hola! Quiero más info sobre el plan Premium 🚀"
   target="_blank"
   rel="noreferrer"
   className="mt-6 inline-block w-full text-center bg-custom-red text-white font-semibold py-3 rounded hover:bg-custom-red/90 transition"
@@ -133,7 +135,7 @@ const Cotizar = () => {
                                   {/* Columna 4 - Híbrido (Transición) */}
 <div className="relative border-2 rounded-2xl p-6 shadow-md bg-white h-full flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg border-custom-blue" >
   <div className="flex items-center justify-between">
-    <h3 className="text-xl font-semibold text-custom-dark">Basic</h3>
+    <h3 className="text-xl font-semibold text-custom-dark">Flex</h3>
     <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Paso intermedio</span>
   </div>
   <p className="mt-3 text-gray-600">
@@ -160,7 +162,7 @@ const Cotizar = () => {
   </div>
 
   <a
-    href="https://wa.me/5491156193199?text=Hola! Quiero más info sobre el plan Basic 🚀"
+    href="https://wa.me/5491156193199?text=Hola! Quiero más info sobre el plan Flex 🚀"
     target="_blank"
   rel="noreferrer"
     className="mt-6 inline-block w-full text-center bg-custom-blue text-custom-dark font-medium py-3 rounded hover:opacity-90 transition"
