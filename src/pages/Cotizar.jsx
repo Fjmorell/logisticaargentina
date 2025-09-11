@@ -193,7 +193,7 @@ const Cotizar = () => {
                 <p><span className="font-semibold">Escalabilidad:</span> Alta</p>
               </div>
               <a href="#cotizador" className="mt-6 inline-block w-full text-center bg-custom-dark text-white font-medium py-3 rounded hover:opacity-90 transition">
-                Hablar con un asesor
+                Cotiza tu servicio
               </a>
             </div>
 
