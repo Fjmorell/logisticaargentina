@@ -178,20 +178,19 @@ const Cotizar = () => {
                 <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">A medida</span>
               </div>
               <p className="mt-3 text-gray-600">
-                Configuramos reglas, integraciones y branding a tu operación.
+                Configurá la distribución de tus paquetes según tus necesidades y optimizá tu negocio al máximo.
+
               </p>
               <ul className="mt-6 space-y-3 text-sm">
-                <li>🛠️ Integración API/ERP/WMS</li>
-                <li>🛠️ Reglas de despacho por zona, peso y SLA</li>
-                <li>🛠️ Ventanas horarias y requisitos especiales</li>
-                <li>🛠️ Etiquetas y documentación con tu marca</li>
-                <li>🛠️ Reportes y KPIs personalizados</li>
-                <li>ℹ️ Requiere onboarding y volumen mínimo</li>
+                <li>🛠️ Definí la cantidad de paquetes que necesitás distribuir</li>
+                <li>🛠️ Ajustá la cantidad de kilómetros de recorrido a tu operación</li>
+                <li>🛠️ Optimización total de tu distribución</li>
+                <li>🛠️ Seguro de paquetería incluido</li>
+                <li>ℹ️ Requiere volumen mínimo y onboarding dedicado</li>
               </ul>
               <div className="mt-6 border-t pt-4 text-sm text-gray-600">
                 <p><span className="font-semibold">Costo:</span> Proyecto + variable</p>
                 <p><span className="font-semibold">Escalabilidad:</span> Alta</p>
-                <p><span className="font-semibold">Trazabilidad:</span> Full + KPIs a medida</p>
               </div>
               <a href="#cotizador" className="mt-6 inline-block w-full text-center bg-custom-dark text-white font-medium py-3 rounded hover:opacity-90 transition">
                 Hablar con un asesor
